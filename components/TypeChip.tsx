@@ -10,7 +10,6 @@ interface ChipProps {
 
 const TypeChip: FC<ChipProps> = (props) => {
   const { type } = props;
-  console.log("woi", type);
   const bgColor = getSecondaryColorFromType(type);
 
   const ChipStyle = css`

@@ -10,9 +10,11 @@ import TypeChip from "./TypeChip";
 import { getPrimaryColorFromType } from "./util";
 
 interface DataProps {
-  url: string;
+  id: string;
   name: string;
   image: string;
+  artwork: string;
+  dreamworld: string;
 }
 
 interface CardProps {
@@ -23,6 +25,7 @@ const NameStyle = css`
   font-size: 15px;
   font-weight: 700;
   line-height: 1px;
+  text-transform: capitalize;
 `;
 
 const AttributeStyle = css`
@@ -31,11 +34,11 @@ const AttributeStyle = css`
 `;
 
 const PokemonCard: FC<CardProps> = (props) => {
-  const name = props.data.name;
+  const {id, name, image, artwork, dreamworld} = props.data
+  
   const GET_POKEMON_TYPE = gql`
     query Pokemon($name: String!) {
       pokemon(name: $name) {
-        name
         types {
           slot
           type {
@@ -51,9 +54,11 @@ const PokemonCard: FC<CardProps> = (props) => {
   const { loading, error, data } = useQuery(GET_POKEMON_TYPE, {
     variables: { name },
   });
+  
+  if (loading) return <div>Loading</div>;
+  if (error) return <div>Error</div>;
 
-  console.log(name, data?.pokemon.name, data?.pokemon.types[0].type.name);
-  const type = data?.pokemon.types[0].type.name
+  const type = data.pokemon.types[0].type.name;
   const bgColor = getPrimaryColorFromType(type);
   const CardStyle = css`
     max-width: 200px;
@@ -72,11 +77,14 @@ const PokemonCard: FC<CardProps> = (props) => {
       <div css={AttributeStyle}>
         <p css={NameStyle}>{name}</p>
         {data &&
-          data.pokemon.types.map((type:any, idx:number) => (
+          data.pokemon.types.map((type: any, idx: number) => (
             <TypeChip key={idx} type={type.type.name} />
           ))}
       </div>
-      <PokeImage type={data?.pokemon.types[0].type.name} image={props.data.image} />
+      <PokeImage
+        type={data.pokemon.types[0].type.name}
+        image={artwork}
+      />
     </div>
   );
 };

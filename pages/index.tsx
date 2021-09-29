@@ -7,10 +7,9 @@ import Head from "next/head";
 
 import { FC, useState } from "react";
 import Layout from "@components/Layout";
-import Header from "@components/Header";
-import Body from "@components/Body";
-import Listpage from "@components/Listpage";
+import Listpage from "@components/Listpage/Listpage";
 import Ownedpage from "@components/Ownedpage";
+import { LISTPAGE, OWNEDPAGE } from "@constants/route";
 
 const color = "white";
 
@@ -43,10 +42,10 @@ const Content: FC<ContentPropsType> = (props) => {
   const { page } = props;
 
   switch (page) {
-    case "LISTPAGE":
+    case LISTPAGE:
       return <Listpage />;
 
-    case "OWNEDPAGE":
+    case OWNEDPAGE:
       return <Ownedpage />;
     default:
       return <></>;
@@ -65,10 +64,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <Header />
-        <Body>
-          <Content page={currentPage} />
-        </Body>
+        <Content page={currentPage} />
       </Layout>
     </div>
   );
