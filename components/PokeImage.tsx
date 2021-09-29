@@ -12,7 +12,7 @@ interface ImageProps {
 
 const PokeImage: FC<ImageProps> = (props) => {
   const { type } = props;
-  const bgColor = getSecondaryColorFromType[type];
+  const bgColor = getSecondaryColorFromType(type);
 
   const ImageStyle = css`
     position: relative;

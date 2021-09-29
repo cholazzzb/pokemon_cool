@@ -10,7 +10,6 @@ import Layout from "@components/Layout";
 import Header from "@components/Header";
 import Body from "@components/Body";
 import Listpage from "@components/Listpage";
-import Detailpage from "@components/Detailpage";
 import Ownedpage from "@components/Ownedpage";
 
 const color = "white";
@@ -41,17 +40,16 @@ interface ContentPropsType {
 }
 
 const Content: FC<ContentPropsType> = (props) => {
-  const { page, ...other } = props;
+  const { page } = props;
 
   switch (page) {
     case "LISTPAGE":
       return <Listpage />;
 
-    case "DETAILPAGE":
-      return <Detailpage />;
-
     case "OWNEDPAGE":
       return <Ownedpage />;
+    default:
+      return <></>;
   }
 };
 
