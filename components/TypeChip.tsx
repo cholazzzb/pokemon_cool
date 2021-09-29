@@ -11,7 +11,7 @@ interface ChipProps {
 const TypeChip: FC<ChipProps> = (props) => {
   const { type } = props;
   console.log("woi", type);
-  const bgColor = getSecondaryColorFromType[type];
+  const bgColor = getSecondaryColorFromType(type);
 
   const ChipStyle = css`
     min-width: 24px;

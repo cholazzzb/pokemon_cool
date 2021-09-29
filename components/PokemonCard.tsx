@@ -54,7 +54,7 @@ const PokemonCard: FC<CardProps> = (props) => {
 
   console.log(name, data?.pokemon.name, data?.pokemon.types[0].type.name);
   const type = data?.pokemon.types[0].type.name
-  const bgColor = getPrimaryColorFromType[type];
+  const bgColor = getPrimaryColorFromType(type);
   const CardStyle = css`
     max-width: 200px;
     background-color: ${bgColor};
