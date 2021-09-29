@@ -24,7 +24,6 @@ const Layout: FC<LayoutProps> = (props) => {
     overflow: hidden;
     height: 100vh;
     max-width: ${420}px;
-    padding: 10px;
     margin: 0 auto;
     border-radius: 20px;
     border: 4px solid #e7e7ef;

@@ -1,11 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { FC, useEffect, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 
-import { FC, useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
-import PokemonCard from "components/PokemonCard";
+import Header from "./Header";
+import PokemonCard from "@components/PokemonCard";
+import { DETAILPAGE } from "@constants/route";
+
+const AllPokemonStyle = css`
+  padding: 10px;
+`;
 
 const GridStyle = css`
   scrollbar-width: thin;
@@ -31,23 +36,6 @@ const GridItemStyle = css`
   justify-content: center;
 `;
 
-const POKEMONS_QUERY = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      next
-      previous
-      status
-      message
-      results {
-        url
-        name
-        image
-      }
-    }
-  }
-`;
-
 interface RowProps {
   data: any;
   index: number;
@@ -56,23 +44,32 @@ interface RowProps {
 
 const Row: FC<RowProps> = (props) => {
   const { data, index, style } = props;
-  console.log("HI", data);
+  const { pokemons, setPage, setCurrentId, setCurrentName } = data;
+
+  const handleClick = () => {
+    setPage(DETAILPAGE);
+    setCurrentId(pokemons.results[index].id);
+    setCurrentName(pokemons.results[index].name);
+  };
+
   return (
-    <div css={GridItemStyle} style={style}>
-      <PokemonCard data={data.pokemons.results[index]} />
+    <div onClick={handleClick} css={GridItemStyle} style={style}>
+      {pokemons.results[index] && (
+        <PokemonCard data={pokemons.results[index]} />
+      )}
     </div>
   );
 };
 
 interface AllPokemonProps {
+  pokemons: any;
   setPage: React.Dispatch<React.SetStateAction<string>>;
-  currentId: number;
   setCurrentId: React.Dispatch<React.SetStateAction<number>>;
-  currentName: string;
   setCurrentName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AllPokemon: FC<AllPokemonProps> = (props) => {
+  const { pokemons, setPage, setCurrentId, setCurrentName } = props;
   const [windowDimension, setWindowDimension] = useState({
     width: 1000,
     height: 666,
@@ -84,26 +81,27 @@ const AllPokemon: FC<AllPokemonProps> = (props) => {
     setWindowDimension({ width, height });
   }, []);
 
-  const { loading, error, data } = useQuery(POKEMONS_QUERY);
-
-  if (loading) return <div>loading</div>;
-  if (error) return <div>error</div>;
-
-  console.log(data);
-
   return (
-    <List
-      css={GridStyle}
-      height={windowDimension.height - 90}
-      itemCount={data?.pokemons.results.length}
-      itemSize={120}
-      width={
-        windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
-      }
-      itemData={{ pokemons: data.pokemons }}
-    >
-      {Row}
-    </List>
+    <div css={AllPokemonStyle}>
+      <Header />
+      <List
+        css={GridStyle}
+        height={windowDimension.height - 90}
+        itemCount={pokemons.count}
+        itemSize={120}
+        width={
+          windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
+        }
+        itemData={{
+          pokemons: pokemons,
+          setPage: setPage,
+          setCurrentId: setCurrentId,
+          setCurrentName: setCurrentName,
+        }}
+      >
+        {Row}
+      </List>
+    </div>
   );
 };
 
