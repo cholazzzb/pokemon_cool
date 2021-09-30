@@ -1,11 +1,11 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { useState } from "react";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
 
-const SearchCountainerStyle = css`
+const SearchContainerStyle = css`
   z-index: 20;
   display: flex;
   width: 100%;
@@ -35,7 +35,7 @@ const Search = () => {
         </span>
       </button>
 
-      {open && <div css={SearchCountainerStyle}>Searching</div>}
+      {open && <div css={SearchContainerStyle}>Searching</div>}
     </div>
   );
 };

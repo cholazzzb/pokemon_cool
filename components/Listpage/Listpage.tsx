@@ -2,91 +2,103 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { FC, useState, Dispatch, SetStateAction } from "react";
+import { FC, Dispatch, SetStateAction, useEffect, useState } from "react";
+import { FixedSizeList as List } from "react-window";
 
-import { useQuery, gql } from "@apollo/client";
+import PokemonCard from "@components/PokemonCard";
+import Header from "./Header";
+import { DETAILPAGE } from "@constants/route";
 
-import Detailpage from "@components/Detailpage/Detailpage";
-import AllPokemon from "@components/AllPokemon/AllPokemon";
-import { ALLPOKEMON, DETAILPAGE } from "@constants/route";
+const ListStyle = css`
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 
-const GET_POKEMONS = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      results {
-        id
-        name
-        image
-        artwork
-        dreamworld
-      }
-    }
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
   }
 `;
 
-interface ContentPropsType {
+const GridItemStyle = css`
+  display: flex;
+  width: 100%;
+  margin: 10px 0px;
+  justify-content: center;
+`;
+
+interface IRowProps {
+  data: any;
+  index: number;
+  style: any;
+}
+
+const Row: FC<IRowProps> = (props) => {
+  const { data, index, style } = props;
+  const { pokemons, setPage, setCurrentId, setCurrentName } = data;
+
+  const handleClick = () => {
+    setPage(DETAILPAGE);
+    setCurrentId(pokemons.results[index].id);
+    setCurrentName(pokemons.results[index].name);
+  };
+
+  return (
+    <div onClick={handleClick} css={GridItemStyle} style={style}>
+      {pokemons.results[index] && (
+        <PokemonCard data={pokemons.results[index]} />
+      )}
+    </div>
+  );
+};
+
+interface IListPage {
   pokemons: any;
-  page: string;
-  setPage: Dispatch<SetStateAction<string>>;
-  currentId: number;
+  setCurrentPage: Dispatch<SetStateAction<string>>;
   setCurrentId: Dispatch<SetStateAction<number>>;
-  currentName: string;
   setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
-const Content: FC<ContentPropsType> = (props) => {
-  const {
-    pokemons,
-    page,
-    setPage,
-    currentId,
-    setCurrentId,
-    currentName,
-    setCurrentName,
-  } = props;
-
-  switch (page) {
-    case ALLPOKEMON:
-      return (
-        <AllPokemon
-          pokemons={pokemons}
-          setPage={setPage}
-          setCurrentId={setCurrentId}
-          setCurrentName={setCurrentName}
-        />
-      );
-
-    case DETAILPAGE:
-      return <Detailpage setPage={setPage} id={currentId} name={currentName} />;
-
-    default:
-      return <></>;
-  }
-};
-
-const Listpage = () => {
-  const [page, setPage] = useState<string>("ALLPOKEMON");
-  const [currentId, setCurrentId] = useState<number>(1);
-  const [currentName, setCurrentName] = useState<string>("");
-
-  const { loading, error, data } = useQuery(GET_POKEMONS, {
-    variables: { limit: 1000, offset: 0 },
+const Listpage: FC<IListPage> = (props) => {
+  const { pokemons, setCurrentPage, setCurrentId, setCurrentName } = props;
+  const [windowDimension, setWindowDimension] = useState({
+    width: 1000,
+    height: 666,
   });
 
-  if (loading) return <div>Loading</div>;
-  if (error) return <div>Error</div>;
+  useEffect(() => {
+    const { innerWidth: width, innerHeight: height } = window;
+    console.log(width, height);
+    setWindowDimension({ width, height });
+  }, []);
 
   return (
-    <Content
-      page={page}
-      setPage={setPage}
-      currentId={currentId}
-      setCurrentId={setCurrentId}
-      currentName={currentName}
-      setCurrentName={setCurrentName}
-      pokemons={data.pokemons}
-    />
+    <div style={{ padding: 10 }}>
+      <Header />
+      <List
+        css={ListStyle}
+        height={windowDimension.height - 90}
+        itemCount={pokemons.count}
+        itemSize={120}
+        width={
+          windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
+        }
+        itemData={{
+          pokemons: pokemons,
+          setPage: setCurrentPage,
+          setCurrentId: setCurrentId,
+          setCurrentName: setCurrentName,
+        }}
+      >
+        {Row}
+      </List>
+    </div>
   );
 };
 

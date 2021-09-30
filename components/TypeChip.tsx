@@ -4,11 +4,11 @@ import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 import { getSecondaryColorFromType } from "./util";
 
-interface ChipProps {
+interface IChipProps {
   type: string;
 }
 
-const TypeChip: FC<ChipProps> = (props) => {
+const TypeChip: FC<IChipProps> = (props) => {
   const { type } = props;
   const bgColor = getSecondaryColorFromType(type);
 

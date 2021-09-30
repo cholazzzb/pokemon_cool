@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 import { FixedSizeList as List } from "react-window";
 
 import Header from "@components/Ownedpage/Header";
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 
 interface IRowProps {
   data: any;
@@ -24,7 +24,13 @@ const Ownedpagestyle = css`
   background-color: blue;
 `;
 
-const Ownedpage = () => {
+interface IOwnedpage {
+  setCurrentPage: Dispatch<SetStateAction<string>>;
+  setCurrentName: Dispatch<SetStateAction<string>>;
+}
+
+const Ownedpage: FC<IOwnedpage> = (props) => {
+  const { setCurrentPage, setCurrentName } = props;
   const [windowDimension, setWindowDimension] = useState({
     width: 1000,
     height: 666,

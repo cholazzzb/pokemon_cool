@@ -9,18 +9,6 @@ import PokeImage from "./PokeImage";
 import TypeChip from "./TypeChip";
 import { getPrimaryColorFromType } from "./util";
 
-interface DataProps {
-  id: string;
-  name: string;
-  image: string;
-  artwork: string;
-  dreamworld: string;
-}
-
-interface CardProps {
-  data: DataProps;
-}
-
 const NameStyle = css`
   font-size: 15px;
   font-weight: 700;
@@ -33,7 +21,19 @@ const AttributeStyle = css`
   flex-direction: column;
 `;
 
-const PokemonCard: FC<CardProps> = (props) => {
+interface ICard {
+  id: string;
+  name: string;
+  image: string;
+  artwork: string;
+  dreamworld: string;
+}
+
+interface ICardProps {
+  data: ICard;
+}
+
+const PokemonCard: FC<ICardProps> = (props) => {
   const {id, name, image, artwork, dreamworld} = props.data
   
   const GET_POKEMON_TYPE = gql`

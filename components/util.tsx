@@ -1,5 +1,5 @@
 export const getPrimaryColorFromType = (type: string) => {
-  const colors: { [key: string]: string } = {
+  const primaryColors: { [key: string]: string } = {
     normal: "#a8a878",
     fire: "#f36b6c",
     fighting: "#c03528",
@@ -18,11 +18,11 @@ export const getPrimaryColorFromType = (type: string) => {
     dark: "#705848",
     steel: "b8b8d0",
   };
-  return colors[type];
+  return primaryColors[type];
 };
 
 export const getSecondaryColorFromType = (type: string) => {
-  const colors: { [key: string]: string } = {
+  const secondaryColors: { [key: string]: string } = {
     normal: "#a8a878",
     fire: "#f47a7b",
     fighting: "#c03528",
@@ -41,5 +41,5 @@ export const getSecondaryColorFromType = (type: string) => {
     dark: "#705848",
     steel: "b8b8d0",
   };
-  return colors[type];
+  return secondaryColors[type];
 };

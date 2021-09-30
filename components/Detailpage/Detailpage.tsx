@@ -14,18 +14,13 @@ import Overview from "./Overview";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { ALLPOKEMON } from "@constants/route";
+import { LISTPAGE } from "@constants/route";
 import { getPrimaryColorFromType } from "@components/util";
 
-const IconStyle = css`
-  width: 15px;
-  height: 15px;
-`;
-
-interface HeaderProps {
+interface IHeaderProps {
   setPage: Dispatch<SetStateAction<string>>;
 }
-const Header: FC<HeaderProps> = (props) => {
+const Header: FC<IHeaderProps> = (props) => {
   const { setPage } = props;
 
   const HeaderStyle = css`
@@ -36,9 +31,14 @@ const Header: FC<HeaderProps> = (props) => {
     padding: 10px;
   `;
 
+  const IconStyle = css`
+    width: 15px;
+    height: 15px;
+  `;
+
   return (
     <div css={HeaderStyle}>
-      <span css={IconStyle} onClick={() => setPage(ALLPOKEMON)}>
+      <span css={IconStyle} onClick={() => setPage(LISTPAGE)}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </span>
       <span>Catch Pokemon</span>
@@ -46,7 +46,7 @@ const Header: FC<HeaderProps> = (props) => {
   );
 };
 
-interface TabProps {
+interface ITabProps {
   currentTab: number;
   id: number;
   name: string;
@@ -56,7 +56,7 @@ interface TabProps {
   stats: any;
   moves: any;
 }
-const Tab: FC<TabProps> = (props) => {
+const Tab: FC<ITabProps> = (props) => {
   const { currentTab, id, name, height, weight, abilities, stats, moves } =
     props;
   switch (currentTab) {
@@ -118,11 +118,11 @@ const GET_POKEMON_DETAIL = gql`
 interface DetailPageProps {
   id: number;
   name: string;
-  setPage: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Detailpage: FC<DetailPageProps> = (props) => {
-  const { id, name, setPage } = props;
+  const { id, name, setCurrentPage } = props;
 
   const [currentTab, setCurrentTab] = useState(0);
   const { loading, error, data } = useQuery(GET_POKEMON_DETAIL, {
@@ -144,7 +144,7 @@ const Detailpage: FC<DetailPageProps> = (props) => {
 
   return (
     <div css={DetailpageStyle}>
-      <Header setPage={setPage} />
+      <Header setPage={setCurrentPage} />
       <Overview id={id} name={name} types={types} />
       <TabContainer currentTab={currentTab} setCurrentTab={setCurrentTab}>
         <Tab currentTab={currentTab} id={id} name={name} {...others} />

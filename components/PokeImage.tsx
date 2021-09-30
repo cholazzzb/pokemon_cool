@@ -26,41 +26,46 @@ const PokeImage: FC<ImageProps> = (props) => {
 
   const [image, setImage] = useState({
     blobAddress: "",
-    success: false,
+    status: "loading",
   });
 
+  const getImage = async () => {
+    await fetch(`${props.image}`, { method: "GET" })
+      .then(function (response) {
+        return response.blob();
+      })
+      .then(function (blob) {
+        if (blob.type === "image/png") {
+          setImage({
+            blobAddress: URL.createObjectURL(blob),
+            status: "success",
+          });
+        } else {
+          setImage({
+            blobAddress: "",
+            status: "error",
+          });
+        }
+      });
+  };
+
   useEffect(() => {
-    (async () => {
-      await fetch(
-        `${props.image}`,
-        { method: "GET" }
-      )
-        .then(function (response) {
-          return response.blob();
-        })
-        .then(function (blob) {
-          if (blob.type === "image/png") {
-            setImage({
-              blobAddress: URL.createObjectURL(blob),
-              success: true,
-            });
-          } else {
-            setImage({
-              blobAddress: "",
-              success: false,
-            });
-          }
-        });
-    })();
+    getImage();
   }, []);
+
+  if (image.status === "loading") return <div css={ImageStyle}>Loading </div>;
+
+  if (image.status === "error")
+    return (
+      <div css={ImageStyle}>
+        Failed to Fetch image
+        <button onClick={getImage}>Retry</button>
+      </div>
+    );
 
   return (
     <div css={ImageStyle}>
-      {image.success ? (
-        <Image src={image.blobAddress} alt="pokemon" layout="fill" />
-      ) : (
-        <p>Failed to load image</p>
-      )}
+      <Image src={image.blobAddress} alt="pokemon" layout="fill" />
     </div>
   );
 };
