@@ -17,6 +17,11 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { ALLPOKEMON } from "@constants/route";
 import { getPrimaryColorFromType } from "@components/util";
 
+const IconStyle = css`
+  width: 15px;
+  height: 15px;
+`;
+
 interface HeaderProps {
   setPage: Dispatch<SetStateAction<string>>;
 }
@@ -33,7 +38,7 @@ const Header: FC<HeaderProps> = (props) => {
 
   return (
     <div css={HeaderStyle}>
-      <span onClick={() => setPage(ALLPOKEMON)}>
+      <span css={IconStyle} onClick={() => setPage(ALLPOKEMON)}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </span>
       <span>Catch Pokemon</span>
@@ -49,15 +54,22 @@ interface TabProps {
   weight: string;
   abilities: any;
   stats: any;
-  moves:any;
+  moves: any;
 }
 const Tab: FC<TabProps> = (props) => {
   const { currentTab, id, name, height, weight, abilities, stats, moves } =
     props;
   switch (currentTab) {
     case 0:
-      return <TabAbout name={name} height={height} weight={weight} abilities={abilities}  />;
-    case 1: 
+      return (
+        <TabAbout
+          name={name}
+          height={height}
+          weight={weight}
+          abilities={abilities}
+        />
+      );
+    case 1:
       return <TabBaseStats stats={stats} />;
     case 2:
       return <TabEvolution id={id} name={name} />;

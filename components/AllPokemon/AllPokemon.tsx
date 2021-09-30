@@ -12,7 +12,7 @@ const AllPokemonStyle = css`
   padding: 10px;
 `;
 
-const GridStyle = css`
+const ListStyle = css`
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 
@@ -85,7 +85,7 @@ const AllPokemon: FC<AllPokemonProps> = (props) => {
     <div css={AllPokemonStyle}>
       <Header />
       <List
-        css={GridStyle}
+        css={ListStyle}
         height={windowDimension.height - 90}
         itemCount={pokemons.count}
         itemSize={120}

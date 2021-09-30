@@ -1,4 +1,4 @@
-const Ownedpage = () => {
+const PokemonCard = () => {
     return (
         <div>
             
@@ -6,4 +6,4 @@ const Ownedpage = () => {
     )
 }
 
-export default Ownedpage
+export default PokemonCard

@@ -6,18 +6,17 @@ import type { NextPage } from "next";
 import Head from "next/head";
 
 import { FC, useState } from "react";
+
 import Layout from "@components/Layout";
 import Listpage from "@components/Listpage/Listpage";
-import Ownedpage from "@components/Ownedpage";
+import Ownedpage from "@components/Ownedpage/Ownedpage";
 import { LISTPAGE, OWNEDPAGE } from "@constants/route";
+import Navigator from "@components/Navigator";
+import Search from "@components/Search";
 
 const color = "white";
 
 const example = css`
-  padding: 32px;
-  background-color: hotpink;
-  font-size: 24px;
-  border-radius: 4px;
   &:hover {
     color: ${color};
   }
@@ -65,6 +64,8 @@ const Home: NextPage = () => {
 
       <Layout>
         <Content page={currentPage} />
+        <Navigator currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Search />
       </Layout>
     </div>
   );
