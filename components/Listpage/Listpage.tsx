@@ -5,8 +5,8 @@ import { css, jsx } from "@emotion/react";
 import { FC, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 
+import Header from "@components/Header";
 import PokemonCard from "@components/PokemonCard";
-import Header from "./Header";
 import { DETAILPAGE } from "@constants/route";
 
 const ListStyle = css`
@@ -80,7 +80,7 @@ const Listpage: FC<IListPage> = (props) => {
 
   return (
     <div style={{ padding: 10 }}>
-      <Header />
+      <Header caption="Pokemon List Total Owned:" />
       <List
         css={ListStyle}
         height={windowDimension.height - 90}

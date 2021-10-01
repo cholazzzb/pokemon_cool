@@ -5,9 +5,10 @@ import { css, jsx } from "@emotion/react";
 import { FixedSizeList as List } from "react-window";
 
 import PokemonCard from "@components/PokemonCard";
-import Header from "@components/Ownedpage/Header";
+import Header from "@components/Header";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import PokemonInfo from "./PokemonInfo";
+import { LISTPAGE } from "@constants/route";
 
 interface IRowProps {
   data: any;
@@ -34,7 +35,6 @@ const Row: FC<IRowProps> = (props) => {
 const ListStyle = css``;
 
 const Ownedpagestyle = css`
-  display: flex;
   width: 100%;
   background-color: blue;
 `;
@@ -67,9 +67,13 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
     console.log("ownedPokemon huahah", sesStorage);
   }, []);
 
+  const onBack = () => {
+    setCurrentPage(LISTPAGE)
+  }
+
   return (
     <div css={Ownedpagestyle}>
-      <Header setCurrentPage={setCurrentPage} />
+      <Header caption="Owned Pokemon" onBack={onBack} />
       <List
         css={ListStyle}
         height={windowDimension.height - 90}

@@ -74,8 +74,8 @@ const Content: FC<IContentProps> = (props) => {
     case OWNEDPAGE:
       return (
         <Ownedpage
-        name={currentName}
-        imgURL={pokemons.results[currentId -1].artwork}
+          name={currentName}
+          imgURL={pokemons.results[currentId - 1].artwork}
           setCurrentPage={setCurrentPage}
           setCurrentName={setCurrentName}
         />
@@ -86,7 +86,7 @@ const Content: FC<IContentProps> = (props) => {
         <Detailpage
           id={currentId}
           name={currentName}
-          imgURL={pokemons.results[currentId -1].artwork}
+          imgURL={pokemons.results[currentId - 1].artwork}
           setCurrentPage={setCurrentPage}
         />
       );
@@ -118,13 +118,13 @@ const Home: NextPage = () => {
 
       <Layout>
         <Content
+          pokemons={data.pokemons}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           currentId={currentId}
           setCurrentId={setCurrentId}
           currentName={currentName}
           setCurrentName={setCurrentName}
-          pokemons={data.pokemons}
         />
         <Navigator currentPage={currentPage} setCurrentPage={setCurrentPage} />
         <Search />
