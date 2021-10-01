@@ -4,9 +4,8 @@ import { css, jsx } from "@emotion/react";
 
 import { FixedSizeList as List } from "react-window";
 
-import PokemonCard from "@components/PokemonCard";
-import Header from "@components/Header";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import Header from "@components/Header";
 import PokemonInfo from "./PokemonInfo";
 import { LISTPAGE } from "@constants/route";
 
@@ -21,12 +20,13 @@ const Row: FC<IRowProps> = (props) => {
   const { ownedPokemon } = data;
   return (
     <div style={style}>
-      <PokemonCard
+      <PokemonInfo
         data={{
           id: "",
           name: ownedPokemon[index].name,
           artwork: ownedPokemon[index].imgURL,
         }}
+        attributeName={ownedPokemon[index].attributes.name}
       />
     </div>
   );
@@ -68,8 +68,8 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
   }, []);
 
   const onBack = () => {
-    setCurrentPage(LISTPAGE)
-  }
+    setCurrentPage(LISTPAGE);
+  };
 
   return (
     <div css={Ownedpagestyle}>
@@ -88,7 +88,6 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
       >
         {Row}
       </List>
-      <PokemonInfo />
     </div>
   );
 };

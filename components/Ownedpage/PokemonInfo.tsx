@@ -1,7 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { Fragment, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import PokemonCard from "@components/PokemonCard";
 
 const OverlayStyle = css`
   z-index: 50;
@@ -20,16 +21,54 @@ const PokemonInfoStyle = css`
   background-color: white;
 `;
 
-const PokemonInfo = () => {
-  const [show, setShow] = useState(false);
+interface IPokemonInfoProps {
+  data: any;
+  attributeName: string;
+}
 
-  if (!show) return <Fragment></Fragment>;
+const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
+  const { data, attributeName } = props;
+  const [open, setOpen] = useState(false);
+
+  const onOpen = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const [releasing, setReleasing] = useState<boolean>(false);
+
+  const releasePokemon = () => {
+    if(releasing){
+      console.log("relasing...", data, attributeName)
+      const sessStorage = window.sessionStorage.getItem("pokemon_cool");
+      if(sessStorage){
+        const sessStorageObj = JSON.parse(sessStorage);
+        let pokemons = sessStorageObj.ownedPokemon.find((pokemon:any) => pokemon.name ===data.name)
+        console.log("here", sessStorageObj, pokemons)
+      }
+    }
+  };
+
+  useEffect(() => {
+    releasePokemon();
+  }, [releasing]);
+
+  if (open) {
+    return (
+      <div css={OverlayStyle}>
+        <div css={PokemonInfoStyle}>
+          <button onClick={() => setReleasing(true)}>Release</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div css={OverlayStyle}>
-      <div css={PokemonInfoStyle}>
-        <button>Release</button>
-      </div>
+    <div onClick={onOpen}>
+      <PokemonCard data={data} />
     </div>
   );
 };

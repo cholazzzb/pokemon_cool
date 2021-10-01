@@ -1,21 +1,20 @@
+import { FC, useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
+
 import {
-  FC,
-  useEffect,
-  Fragment,
-  useState,
-  ChangeEvent,
-  SyntheticEvent,
-} from "react";
+  getOwnedPokemonData,
+  isNameAlreadyExist,
+  isPokemonAlreadyExist,
+  saveNewPokemon,
+} from "utils/session";
 
 interface IAlertBody {
-  name?: string;
-  imgURL?: string;
-  level: string;
+  name: string;
+  imgURL: string;
   onClose: () => void;
 }
 
 const AlertBody: FC<IAlertBody> = (props) => {
-  const { name, imgURL, level, onClose } = props;
+  const { name, imgURL, onClose } = props;
 
   const [pokemonName, setPokemonName] = useState<string>("");
   const [saving, setSaving] = useState<boolean>(false);
@@ -25,37 +24,40 @@ const AlertBody: FC<IAlertBody> = (props) => {
   };
 
   const submitForm = () => {
-    if (saving && level === "success") {
-      const sessStorage = window.sessionStorage.getItem("pokemon_cool");
-      if (sessStorage) {
-        const sessStorageObj = JSON.parse(sessStorage);
-        const newPokemon = {
-          ownedPokemon: [
-            ...sessStorageObj.ownedPokemon,
-            {
-              name: name,
-              imgURL: imgURL,
-              attribute: { name: pokemonName },
-            },
-          ],
-        };
-        window.sessionStorage.setItem(
-          "pokemon_cool",
-          JSON.stringify(newPokemon)
-        );
+    const ownedPokemon = getOwnedPokemonData(window);
+    let newPokemon
+    if (ownedPokemon) {
+      const nameExist = isNameAlreadyExist(ownedPokemon, pokemonName);
+      console.log("nameExist", nameExist);
+      if (!nameExist) {
+        const pokemonExist = isPokemonAlreadyExist(ownedPokemon, name);
+        if (pokemonExist) {
+          newPokemon = {};
+        } else {
+          newPokemon = {
+            ownedPokemon: [
+              ...ownedPokemon,
+              {
+                name: name,
+                imgURL: imgURL,
+                attributes: [{ name: pokemonName }],
+              },
+            ],
+          };
+        }
+        saveNewPokemon(window, newPokemon);
       } else {
-        const newPokemon = {
-          ownedPokemon: [
-            { name: name, imgURL: imgURL, attribute: { name: pokemonName } },
-          ],
-        };
-        window.sessionStorage.setItem(
-          "pokemon_cool",
-          JSON.stringify(newPokemon)
-        );
+        // Give Error Alert (That name already exist in your pokemons!)
       }
-      onClose();
+    } else {
+      newPokemon = {
+        ownedPokemon: [
+          { name: name, imgURL: imgURL, attributes: [{ name: pokemonName }] },
+        ],
+      };
+      saveNewPokemon(window, newPokemon);
     }
+    onClose();
   };
 
   const handleSubmit = (e: SyntheticEvent) => {
@@ -64,30 +66,20 @@ const AlertBody: FC<IAlertBody> = (props) => {
   };
 
   useEffect(() => {
-    submitForm();
+    if (saving) {
+      submitForm();
+    }
   }, [saving]);
 
-  let body;
-  switch (level) {
-    case "success":
-      body = (
-        <div>
-          <form>
-            <label htmlFor="">Pokemon Name</label>
-            <input value={pokemonName} onChange={handleChange} />
-            <button onClick={handleSubmit}>Save!</button>
-          </form>
-        </div>
-      );
-      break;
-    case "danger":
-      body = <div></div>;
-
-    default:
-      body = <Fragment></Fragment>;
-      break;
-  }
-  return body;
+  return (
+    <div>
+      <form>
+        <label>Pokemon Name</label>
+        <input value={pokemonName} onChange={handleChange} />
+        <button onClick={handleSubmit}>Save!</button>
+      </form>
+    </div>
+  );
 };
 
 export default AlertBody;

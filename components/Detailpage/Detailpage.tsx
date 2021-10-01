@@ -173,16 +173,11 @@ const Detailpage: FC<DetailPageProps> = (props) => {
     <div css={DetailpageStyle}>
       {catchStatus === "SUCCESS" ? (
         <Alert level="success">
-          <AlertBody
-            name={name}
-            imgURL={imgURL}
-            level="success"
-            onClose={onClose}
-          />
+          <AlertBody name={name} imgURL={imgURL} onClose={onClose} />
         </Alert>
       ) : catchStatus === "FAILED" ? (
         <Alert level="danger">
-          <AlertBody level="danger" onClose={onClose} />
+          <div></div>{" "}
         </Alert>
       ) : null}
       <Header
