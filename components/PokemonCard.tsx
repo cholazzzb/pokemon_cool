@@ -24,9 +24,9 @@ const AttributeStyle = css`
 interface ICard {
   id: string;
   name: string;
-  image: string;
+  image?: string;
   artwork: string;
-  dreamworld: string;
+  dreamworld?: string;
 }
 
 interface ICardProps {
@@ -34,8 +34,8 @@ interface ICardProps {
 }
 
 const PokemonCard: FC<ICardProps> = (props) => {
-  const {id, name, image, artwork, dreamworld} = props.data
-  
+  const { id, name, image, artwork, dreamworld } = props.data;
+
   const GET_POKEMON_TYPE = gql`
     query Pokemon($name: String!) {
       pokemon(name: $name) {
@@ -54,7 +54,7 @@ const PokemonCard: FC<ICardProps> = (props) => {
   const { loading, error, data } = useQuery(GET_POKEMON_TYPE, {
     variables: { name },
   });
-  
+
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
 
@@ -81,10 +81,7 @@ const PokemonCard: FC<ICardProps> = (props) => {
             <TypeChip key={idx} type={type.type.name} />
           ))}
       </div>
-      <PokeImage
-        type={data.pokemon.types[0].type.name}
-        image={artwork}
-      />
+      <PokeImage type={data.pokemon.types[0].type.name} image={artwork} />
     </div>
   );
 };

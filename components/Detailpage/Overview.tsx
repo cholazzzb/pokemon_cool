@@ -9,6 +9,7 @@ import TypeChip from "@components/TypeChip";
 interface OverviewProps {
   id: number;
   name: string;
+  imgURL: string;
   types: any;
 }
 
@@ -37,14 +38,12 @@ const ImageStyle = css`
 `;
 
 const Overview: FC<OverviewProps> = (props) => {
-  const { id, name, types } = props;
+  const { id, name, imgURL, types } = props;
 
   const OverviewStyle = css`
     color: white;
     padding: 10px 20px;
   `;
-
-  console.log("OVERVIEW", types);
 
   return (
     <div css={OverviewStyle}>
@@ -53,15 +52,14 @@ const Overview: FC<OverviewProps> = (props) => {
           <p css={NameStyle}>{name}</p>
           <div css={TypesStyle}>
             {types.map((type: any) => (
-              <TypeChip key="" type={type.type.name} />
+              <TypeChip key={type.type.name} type={type.type.name} />
             ))}
           </div>
         </div>
         <p>Id: {id}</p>
       </div>
       <div css={ImageStyle}>
-        Image
-        {/* <PokeImage name={props.name}/> */}
+        <PokeImage type={types[0].type.name} image={imgURL}/>
       </div>
     </div>
   );

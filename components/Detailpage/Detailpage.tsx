@@ -13,15 +13,27 @@ import TabMoves from "./TabMoves";
 import Overview from "./Overview";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCat, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { LISTPAGE } from "@constants/route";
 import { getPrimaryColorFromType } from "@components/util";
+import Alert from "@components/Alert";
+import AlertBody from "./AlertBody";
 
 interface IHeaderProps {
+  catchStatus: null | string;
   setPage: Dispatch<SetStateAction<string>>;
+  setCatchStatus: Dispatch<SetStateAction<null | string>>;
 }
 const Header: FC<IHeaderProps> = (props) => {
-  const { setPage } = props;
+  const { setPage, setCatchStatus } = props;
+  const catchPokemon = async () => {
+    const reset = async () => {
+      setCatchStatus(null);
+    };
+    await reset();
+    const successRate = Math.random();
+    successRate > 0.5 ? setCatchStatus("SUCCESS") : setCatchStatus("FAILED");
+  };
 
   const HeaderStyle = css`
     color: white;
@@ -36,12 +48,20 @@ const Header: FC<IHeaderProps> = (props) => {
     height: 15px;
   `;
 
+  const CatctStyle = css`
+    margin: 0px 20px;
+  `;
   return (
     <div css={HeaderStyle}>
       <span css={IconStyle} onClick={() => setPage(LISTPAGE)}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </span>
-      <span>Catch Pokemon</span>
+      <div css={CatctStyle} onClick={catchPokemon}>
+        <span>
+          <FontAwesomeIcon icon={faCat} />
+        </span>
+        Catch!
+      </div>
     </div>
   );
 };
@@ -118,11 +138,18 @@ const GET_POKEMON_DETAIL = gql`
 interface DetailPageProps {
   id: number;
   name: string;
+  imgURL: string;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Detailpage: FC<DetailPageProps> = (props) => {
-  const { id, name, setCurrentPage } = props;
+  const { id, name, imgURL, setCurrentPage } = props;
+
+  const [catchStatus, setCatchStatus] = useState<null | string>(null);
+
+  const onClose = () => {
+    setCatchStatus(null);
+  };
 
   const [currentTab, setCurrentTab] = useState(0);
   const { loading, error, data } = useQuery(GET_POKEMON_DETAIL, {
@@ -144,8 +171,26 @@ const Detailpage: FC<DetailPageProps> = (props) => {
 
   return (
     <div css={DetailpageStyle}>
-      <Header setPage={setCurrentPage} />
-      <Overview id={id} name={name} types={types} />
+      {catchStatus === "SUCCESS" ? (
+        <Alert level="success">
+          <AlertBody
+            name={name}
+            imgURL={imgURL}
+            level="success"
+            onClose={onClose}
+          />
+        </Alert>
+      ) : catchStatus === "FAILED" ? (
+        <Alert level="danger">
+          <AlertBody level="danger" onClose={onClose} />
+        </Alert>
+      ) : null}
+      <Header
+        catchStatus={catchStatus}
+        setPage={setCurrentPage}
+        setCatchStatus={setCatchStatus}
+      />
+      <Overview id={id} name={name} imgURL={imgURL} types={types} />
       <TabContainer currentTab={currentTab} setCurrentTab={setCurrentTab}>
         <Tab currentTab={currentTab} id={id} name={name} {...others} />
       </TabContainer>

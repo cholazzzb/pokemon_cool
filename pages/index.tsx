@@ -62,13 +62,34 @@ const Content: FC<IContentProps> = (props) => {
 
   switch (currentPage) {
     case LISTPAGE:
-      return <Listpage pokemons={pokemons} setCurrentPage={setCurrentPage} setCurrentId={setCurrentId} setCurrentName={setCurrentName}/>;
+      return (
+        <Listpage
+          pokemons={pokemons}
+          setCurrentPage={setCurrentPage}
+          setCurrentId={setCurrentId}
+          setCurrentName={setCurrentName}
+        />
+      );
 
     case OWNEDPAGE:
-      return <Ownedpage setCurrentPage={setCurrentPage} setCurrentName={setCurrentName} />;
+      return (
+        <Ownedpage
+        name={currentName}
+        imgURL={pokemons.results[currentId -1].artwork}
+          setCurrentPage={setCurrentPage}
+          setCurrentName={setCurrentName}
+        />
+      );
 
     case DETAILPAGE:
-      return <Detailpage setCurrentPage={setCurrentPage} id={currentId} name={currentName} />;
+      return (
+        <Detailpage
+          id={currentId}
+          name={currentName}
+          imgURL={pokemons.results[currentId -1].artwork}
+          setCurrentPage={setCurrentPage}
+        />
+      );
 
     default:
       return <div>ERROR</div>;

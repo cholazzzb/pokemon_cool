@@ -4,8 +4,10 @@ import { css, jsx } from "@emotion/react";
 
 import { FixedSizeList as List } from "react-window";
 
+import PokemonCard from "@components/PokemonCard";
 import Header from "@components/Ownedpage/Header";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import PokemonInfo from "./PokemonInfo";
 
 interface IRowProps {
   data: any;
@@ -14,23 +16,39 @@ interface IRowProps {
 }
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-
-  return <div style={style}>Something</div>;
+  console.log(data.ownedPokemon);
+  const { ownedPokemon } = data;
+  return (
+    <div style={style}>
+      <PokemonCard
+        data={{
+          id: "",
+          name: ownedPokemon[index].name,
+          artwork: ownedPokemon[index].imgURL,
+        }}
+      />
+    </div>
+  );
 };
 
 const ListStyle = css``;
 
 const Ownedpagestyle = css`
+  display: flex;
+  width: 100%;
   background-color: blue;
 `;
 
 interface IOwnedpage {
+  name: string;
+  imgURL: string;
   setCurrentPage: Dispatch<SetStateAction<string>>;
   setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
 const Ownedpage: FC<IOwnedpage> = (props) => {
   const { setCurrentPage, setCurrentName } = props;
+  const [ownedPokemon, setOwnedPokemon] = useState([]);
   const [windowDimension, setWindowDimension] = useState({
     width: 1000,
     height: 666,
@@ -40,29 +58,33 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
     const { innerWidth: width, innerHeight: height } = window;
     console.log(width, height);
     setWindowDimension({ width, height });
+
+    const sesStorage = window.sessionStorage.getItem("pokemon_cool");
+    if (sesStorage) {
+      const sesStorageObj = JSON.parse(sesStorage);
+      setOwnedPokemon(sesStorageObj.ownedPokemon);
+    }
+    console.log("ownedPokemon huahah", sesStorage);
   }, []);
 
   return (
     <div css={Ownedpagestyle}>
-      <Header />
+      <Header setCurrentPage={setCurrentPage} />
       <List
         css={ListStyle}
         height={windowDimension.height - 90}
-        itemCount={12}
+        itemCount={ownedPokemon.length}
         itemSize={120}
         width={
           windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
         }
         itemData={{
-          pokemons: [100],
+          ownedPokemon: ownedPokemon,
         }}
       >
         {Row}
       </List>
-      <div>
-        <div>Bulbasaur</div>
-        <div>Charmander</div>
-      </div>
+      <PokemonInfo />
     </div>
   );
 };
