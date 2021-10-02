@@ -10,11 +10,24 @@ const OverlayStyle = css`
   position: absolute;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const CloseContainerStyle = css`
+  padding: 30px 0px;
   display: flex;
-  flex-direction: row-reverse;
+  width: 100%;
+`;
+
+const HeadTextStyle = css`
+  display: flex;
+  width: 80%;
+  justify-content: center;
+`;
+
+const CloseIconStyle = css`
+  display: flex;
+  width: 10%;
 `;
 
 const AlertBodyStyle = css`
@@ -24,6 +37,7 @@ const AlertBodyStyle = css`
 `;
 
 interface IAlertProps {
+  headText: string;
   children: any;
   level: string;
 }
@@ -50,13 +64,14 @@ const Alert: FC<IAlertProps> = (props) => {
   }
   const AlertStyle = css`
     z-index: 50;
-    position: relative;
-    top: 5%;
-    height: 100px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0%;
+    height: 60%;
     background-color: white;
-    border-style: solid;
-    border-color: ${primColor};
-    margin: 20px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
     padding: 20px;
   `;
 
@@ -66,9 +81,13 @@ const Alert: FC<IAlertProps> = (props) => {
     <div css={OverlayStyle}>
       <div css={AlertStyle}>
         <div css={CloseContainerStyle}>
-          <span onClick={onClose}>
-            <FontAwesomeIcon icon={faTimes} />
-          </span>
+          <div css={CloseIconStyle}></div>
+          <div css={HeadTextStyle}>{props.headText}</div>
+          <div css={CloseIconStyle}>
+            <span onClick={onClose}>
+              <FontAwesomeIcon icon={faTimes} />
+            </span>
+          </div>
         </div>
         <div css={AlertBodyStyle}>{props.children}</div>
       </div>

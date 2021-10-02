@@ -21,7 +21,7 @@ const InformationStyle = css`
 `;
 
 const NameStyle = css`
-  font-size: 15px;
+  font-size: 30px;
   font-weight: 700;
   line-height: 1px;
   text-transform: capitalize;
@@ -34,16 +34,15 @@ const TypesStyle = css`
 const ImageStyle = css`
   display: flex;
   justify-content: center;
-  height: 50px;
+  height: 200px;
+`;
+const OverviewStyle = css`
+  color: white;
+  padding: 0px 20px 10px 20px;
 `;
 
 const Overview: FC<OverviewProps> = (props) => {
   const { id, name, imgURL, types } = props;
-
-  const OverviewStyle = css`
-    color: white;
-    padding: 10px 20px;
-  `;
 
   return (
     <div css={OverviewStyle}>
@@ -56,10 +55,14 @@ const Overview: FC<OverviewProps> = (props) => {
             ))}
           </div>
         </div>
-        <p>Id: {id}</p>
+        <p>#{id}</p>
       </div>
       <div css={ImageStyle}>
-        <PokeImage type={types[0].type.name} image={imgURL}/>
+        <PokeImage
+          type={types[0].type.name}
+          image={imgURL}
+          size={200}
+        />
       </div>
     </div>
   );

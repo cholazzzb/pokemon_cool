@@ -8,6 +8,7 @@ import { FixedSizeList as List } from "react-window";
 import Header from "@components/Header";
 import PokemonCard from "@components/PokemonCard";
 import { DETAILPAGE } from "@constants/route";
+import RingGraph from "./PieChart";
 
 const ListStyle = css`
   scrollbar-width: thin;
@@ -26,7 +27,7 @@ const ListStyle = css`
   }
 `;
 
-const GridItemStyle = css`
+const ListItemStyle = css`
   display: flex;
   width: 100%;
   margin: 10px 0px;
@@ -39,6 +40,24 @@ interface IRowProps {
   style: any;
 }
 
+const PieChartDataDummy = [
+  {
+    name: "bulbasaur",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }, { name: "BOBA" }],
+  },
+  {
+    name: "chimcar",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }],
+  },
+  {
+    name: "geodude",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }],
+  },
+];
+
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
   const { pokemons, setPage, setCurrentId, setCurrentName } = data;
@@ -50,7 +69,7 @@ const Row: FC<IRowProps> = (props) => {
   };
 
   return (
-    <div onClick={handleClick} css={GridItemStyle} style={style}>
+    <div onClick={handleClick} css={ListItemStyle} style={style}>
       {pokemons.results[index] && (
         <PokemonCard data={pokemons.results[index]} />
       )}
@@ -80,12 +99,14 @@ const Listpage: FC<IListPage> = (props) => {
 
   return (
     <div style={{ padding: 10 }}>
-      <Header caption="Pokemon List Total Owned:" />
+      <Header caption="Total Owned:" />
+      <RingGraph data={PieChartDataDummy} />
+      <Header caption="Pokemon List:" />
       <List
         css={ListStyle}
-        height={windowDimension.height - 90}
+        height={windowDimension.height - 350}
         itemCount={pokemons.count}
-        itemSize={120}
+        itemSize={200}
         width={
           windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
         }

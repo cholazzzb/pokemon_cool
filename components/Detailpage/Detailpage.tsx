@@ -13,19 +13,21 @@ import TabMoves from "./TabMoves";
 import Overview from "./Overview";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCat, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { LISTPAGE } from "@constants/route";
-import { getPrimaryColorFromType } from "@components/util";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { getPrimaryColorFromType, getSecondaryColorFromType } from "@components/util";
 import Alert from "@components/Alert";
 import AlertBody from "./AlertBody";
+import Header from "@components/Header";
 
-interface IHeaderProps {
+interface ICatchProps {
+  iconColor: string;
   catchStatus: null | string;
   setPage: Dispatch<SetStateAction<string>>;
   setCatchStatus: Dispatch<SetStateAction<null | string>>;
 }
-const Header: FC<IHeaderProps> = (props) => {
-  const { setPage, setCatchStatus } = props;
+
+const Catch: FC<ICatchProps> = (props) => {
+  const { iconColor, setCatchStatus } = props;
   const catchPokemon = async () => {
     const reset = async () => {
       setCatchStatus(null);
@@ -35,34 +37,19 @@ const Header: FC<IHeaderProps> = (props) => {
     successRate > 0.5 ? setCatchStatus("SUCCESS") : setCatchStatus("FAILED");
   };
 
-  const HeaderStyle = css`
-    color: white;
+  const CatchIconStyle = css`
+    width: 25px;
+    height: 25px;
+    border-radius: 9999px;
+    background-color: ${iconColor};
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-    padding: 10px;
-  `;
-
-  const IconStyle = css`
-    width: 15px;
-    height: 15px;
-  `;
-
-  const CatctStyle = css`
-    margin: 0px 20px;
+    justify-content: center;
+    align-items: center;
   `;
   return (
-    <div css={HeaderStyle}>
-      <span css={IconStyle} onClick={() => setPage(LISTPAGE)}>
-        <FontAwesomeIcon icon={faChevronLeft} />
-      </span>
-      <div css={CatctStyle} onClick={catchPokemon}>
-        <span>
-          <FontAwesomeIcon icon={faCat} />
-        </span>
-        Catch!
-      </div>
-    </div>
+    <span onClick={catchPokemon} css={CatchIconStyle}>
+      <FontAwesomeIcon icon={faPlus} />
+    </span>
   );
 };
 
@@ -161,32 +148,39 @@ const Detailpage: FC<DetailPageProps> = (props) => {
 
   const { types, ...others } = data.pokemon;
 
-  const bgColor = getPrimaryColorFromType(types[0].type.name);
+  const primColor = getPrimaryColorFromType(types[0].type.name);
+  const seconColor = getSecondaryColorFromType(types[0].type.name)
   const DetailpageStyle = css`
-    background-color: ${bgColor};
+    background-color: ${primColor};
     display: flex;
     flex-direction: column;
     width: 100%;
   `;
 
+
   return (
     <div css={DetailpageStyle}>
       {catchStatus === "SUCCESS" ? (
-        <Alert level="success">
+        <Alert level="success" headText={"Catching Pokemon"}>
           <AlertBody name={name} imgURL={imgURL} onClose={onClose} />
         </Alert>
       ) : catchStatus === "FAILED" ? (
-        <Alert level="danger">
-          <div></div>{" "}
+        <Alert level="danger" headText={"Catching Pokemon"}>
+          <div></div>
         </Alert>
       ) : null}
-      <Header
-        catchStatus={catchStatus}
-        setPage={setCurrentPage}
-        setCatchStatus={setCatchStatus}
-      />
+
+      <Header caption="" onBack={() => setCurrentPage("LISTPAGE")}>
+        <Catch
+          catchStatus={catchStatus}
+          setPage={setCurrentPage}
+          setCatchStatus={setCatchStatus}
+          iconColor={seconColor}
+        />
+      </Header>
+
       <Overview id={id} name={name} imgURL={imgURL} types={types} />
-      <TabContainer currentTab={currentTab} setCurrentTab={setCurrentTab}>
+      <TabContainer currentTab={currentTab} setCurrentTab={setCurrentTab} primColor={primColor}>
         <Tab currentTab={currentTab} id={id} name={name} {...others} />
       </TabContainer>
     </div>

@@ -7,34 +7,23 @@ const TabContainerStyle = css`
   width: 100%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  background-color: white;
+  background-color: #f7f7f7;
+  color: black;
+  overflow: auto;
+  padding-top: 20px;
 `;
 
 const TabHeaderStyle = css`
   display: flex;
-  width: 100%;
-  padding-top: 30px;
+  padding: 30px;
 `;
 
 const TabStyle = css`
+  display:flex;
+  justify-content:center;
   width: 25%;
   font-size: 12px;
-  color: gray;
-  text-align: center;
   padding: 10px;
-  border-style: solid;
-  border-color: #dbe1f3;
-  border-width: 0px 0px 2px 0px;
-`;
-
-const ActiveTabStyle = css`
-  width: 25%;
-  font-size: 12px;
-  text-align: center;
-  padding: 10px;
-  border-style: solid;
-  border-color: #aeb5d2;
-  border-width: 0px 0px 2px 0px;
 `;
 
 const TabBodyStyle = css``;
@@ -43,18 +32,27 @@ const tabs: string[] = ["About", "Base Stats", "Evolution", "Moves"];
 
 interface TabContainerProps {
   children: any;
+  primColor: string;
   currentTab: number;
   setCurrentTab: Dispatch<SetStateAction<number>>;
 }
+
 const TabContainer: FC<TabContainerProps> = (props) => {
+  const ActiveTabStyle = css`
+    border-style: solid;
+    border-color: #aeb5d2;
+    border-width: 0px 0px 2px 0px;
+    border-radius: 20px;
+    background-color: ${props.primColor};
+  `;
   return (
     <div css={TabContainerStyle}>
       <div css={TabHeaderStyle}>
         {tabs.map((tab, idx) => (
           <div
+            css={idx === props.currentTab ? [ActiveTabStyle, TabStyle] : TabStyle}
             key={tab}
             onClick={() => props.setCurrentTab(idx)}
-            css={idx === props.currentTab ? ActiveTabStyle : TabStyle}
           >
             {tab}
           </div>

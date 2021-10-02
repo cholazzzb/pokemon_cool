@@ -61,7 +61,9 @@ const PokemonCard: FC<ICardProps> = (props) => {
   const type = data.pokemon.types[0].type.name;
   const bgColor = getPrimaryColorFromType(type);
   const CardStyle = css`
-    max-width: 200px;
+    min-width: 250px;
+    max-width: 300px;
+    height: 150px;
     background-color: ${bgColor};
     color: white;
     padding: 20px 0px 0px 22px;
@@ -81,7 +83,7 @@ const PokemonCard: FC<ICardProps> = (props) => {
             <TypeChip key={idx} type={type.type.name} />
           ))}
       </div>
-      <PokeImage type={data.pokemon.types[0].type.name} image={artwork} />
+      <PokeImage type={data.pokemon.types[0].type.name} image={artwork} size={75} />
     </div>
   );
 };

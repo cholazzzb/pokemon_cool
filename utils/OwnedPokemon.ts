@@ -1,4 +1,4 @@
-interface IData {
+export interface IOwnedPokemon {
   name: string;
   imgURL: string;
   attributes: {
@@ -7,9 +7,9 @@ interface IData {
 }
 
 class OwnedPokemon {
-  private _data: IData[] | null = null;
+  private _data: IOwnedPokemon[] | null = null;
 
-  constructor(data: IData[] | null) {
+  constructor(data: IOwnedPokemon[] | null) {
     this._data = data;
   }
 
@@ -71,8 +71,8 @@ class OwnedPokemon {
     if (nameExist && this._data) {
       this._data.some((pokemon, pokeIdx) =>
         pokemon.attributes.some((attri: any, attriIdx: any) => {
-          console.log("CHECK THIS", attri.name, name)
           if (attri.name === name) {
+            console.log("CHECK THIS", attri.name, name, pokeIdx)
             pokemonIdx = pokeIdx;
             nameIdx = attriIdx;
             return true;

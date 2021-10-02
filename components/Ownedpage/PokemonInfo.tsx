@@ -25,12 +25,11 @@ const PokemonInfoStyle = css`
 
 interface IPokemonInfoProps {
   data: any;
-  attributeName: string;
   loadOwnedPokemon: () => void
 }
 
 const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
-  const { data, attributeName , loadOwnedPokemon} = props;
+  const { data , loadOwnedPokemon} = props;
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {
@@ -68,7 +67,7 @@ const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
   }
 
   return (
-    <div onClick={onOpen}>
+    <div>
       <PokemonCard data={data} />
     </div>
   );
