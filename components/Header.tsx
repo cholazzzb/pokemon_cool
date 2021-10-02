@@ -36,12 +36,12 @@ const Header: FC<IHeaderProps> = (props) => {
   return (
     <div css={HeaderStyle}>
       {props.onBack && (
-        <span css={IconStyle} onClick={props.onBack}>
+        <span data-testid="header-backicon" css={IconStyle} onClick={props.onBack}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </span>
       )}
-      <div css={CaptionStyle}>{props.caption}</div>
-      <div>{props.children}</div>
+      <div data-testid="header-label" css={CaptionStyle}>{props.caption}</div>
+      <div data-testid="header-children-label">{props.children}</div>
     </div>
   );
 };

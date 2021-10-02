@@ -25,7 +25,7 @@ const TypeChip: FC<IChipProps> = (props) => {
     text-transform: capitalize;
   `;
 
-  return <div css={ChipStyle}>{type}</div>;
+  return <div data-testid="typechip-label" css={ChipStyle}>{type}</div>;
 };
 
 export default TypeChip;

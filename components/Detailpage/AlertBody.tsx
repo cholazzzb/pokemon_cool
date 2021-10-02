@@ -2,10 +2,10 @@ import { FC, useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
 
 import {
   getOwnedPokemonData,
-  isNameAlreadyExist,
-  isPokemonAlreadyExist,
-  saveNewPokemon,
+  saveNewPokemon
 } from "utils/session";
+
+import OwnedPokemon from "../../utils/OwnedPokemon"
 
 interface IAlertBody {
   name: string;
@@ -24,39 +24,10 @@ const AlertBody: FC<IAlertBody> = (props) => {
   };
 
   const submitForm = () => {
-    const ownedPokemon = getOwnedPokemonData(window);
-    let newPokemon
-    if (ownedPokemon) {
-      const nameExist = isNameAlreadyExist(ownedPokemon, pokemonName);
-      console.log("nameExist", nameExist);
-      if (!nameExist) {
-        const pokemonExist = isPokemonAlreadyExist(ownedPokemon, name);
-        if (pokemonExist) {
-          newPokemon = {};
-        } else {
-          newPokemon = {
-            ownedPokemon: [
-              ...ownedPokemon,
-              {
-                name: name,
-                imgURL: imgURL,
-                attributes: [{ name: pokemonName }],
-              },
-            ],
-          };
-        }
-        saveNewPokemon(window, newPokemon);
-      } else {
-        // Give Error Alert (That name already exist in your pokemons!)
-      }
-    } else {
-      newPokemon = {
-        ownedPokemon: [
-          { name: name, imgURL: imgURL, attributes: [{ name: pokemonName }] },
-        ],
-      };
-      saveNewPokemon(window, newPokemon);
-    }
+    const sessStorage = getOwnedPokemonData(window)
+    let ownedPokemon = new OwnedPokemon(sessStorage)
+    ownedPokemon.addPokemon(name, pokemonName, imgURL)
+    saveNewPokemon(window, ownedPokemon.data)
     onClose();
   };
 

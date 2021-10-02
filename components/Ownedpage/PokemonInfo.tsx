@@ -3,6 +3,8 @@
 import { css, jsx } from "@emotion/react";
 import { FC, useEffect, useState } from "react";
 import PokemonCard from "@components/PokemonCard";
+import { getOwnedPokemonData, saveNewPokemon } from "@utils/session";
+import OwnedPokemon from "@utils/OwnedPokemon";
 
 const OverlayStyle = css`
   z-index: 50;
@@ -24,10 +26,11 @@ const PokemonInfoStyle = css`
 interface IPokemonInfoProps {
   data: any;
   attributeName: string;
+  loadOwnedPokemon: () => void
 }
 
 const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
-  const { data, attributeName } = props;
+  const { data, attributeName , loadOwnedPokemon} = props;
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {
@@ -41,14 +44,12 @@ const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
   const [releasing, setReleasing] = useState<boolean>(false);
 
   const releasePokemon = () => {
-    if(releasing){
-      console.log("relasing...", data, attributeName)
-      const sessStorage = window.sessionStorage.getItem("pokemon_cool");
-      if(sessStorage){
-        const sessStorageObj = JSON.parse(sessStorage);
-        let pokemons = sessStorageObj.ownedPokemon.find((pokemon:any) => pokemon.name ===data.name)
-        console.log("here", sessStorageObj, pokemons)
-      }
+    if (releasing) {
+      const sessStorage = getOwnedPokemonData(window);
+      let ownedPokemon = new OwnedPokemon(sessStorage);
+      ownedPokemon.releasePokemon(data.name);
+      saveNewPokemon(window, ownedPokemon.data);
+      loadOwnedPokemon()
     }
   };
 

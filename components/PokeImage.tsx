@@ -65,7 +65,7 @@ const PokeImage: FC<ImageProps> = (props) => {
 
   return (
     <div css={ImageStyle}>
-      <Image src={image.blobAddress} alt="pokemon" layout="fill" />
+      <Image data-testid="pokemon-image" src={image.blobAddress} alt="pokemon" layout="fill" />
     </div>
   );
 };

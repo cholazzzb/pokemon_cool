@@ -6,8 +6,9 @@ import { FixedSizeList as List } from "react-window";
 
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import Header from "@components/Header";
-import PokemonInfo from "./PokemonInfo";
 import { LISTPAGE } from "@constants/route";
+import { getOwnedPokemonData } from "@utils/session";
+import CollectionList from "./CollectionList";
 
 interface IRowProps {
   data: any;
@@ -17,16 +18,14 @@ interface IRowProps {
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
   console.log(data.ownedPokemon);
-  const { ownedPokemon } = data;
+  const { ownedPokemon, loadOwnedPokemon } = data;
   return (
     <div style={style}>
-      <PokemonInfo
-        data={{
-          id: "",
-          name: ownedPokemon[index].name,
-          artwork: ownedPokemon[index].imgURL,
-        }}
-        attributeName={ownedPokemon[index].attributes.name}
+      <CollectionList
+        pokemonName={ownedPokemon[index].name}
+        artwork={ownedPokemon[index].imgURL}
+        pokemonCollection={ownedPokemon[index].attributes}
+        loadOwnedPokemon={loadOwnedPokemon}
       />
     </div>
   );
@@ -54,17 +53,18 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
     height: 666,
   });
 
+  const loadOwnedPokemon = () => {
+    const sesStorage = getOwnedPokemonData(window);
+    if (sesStorage) {
+      setOwnedPokemon(sesStorage);
+    }
+  };
+
   useEffect(() => {
     const { innerWidth: width, innerHeight: height } = window;
     console.log(width, height);
     setWindowDimension({ width, height });
-
-    const sesStorage = window.sessionStorage.getItem("pokemon_cool");
-    if (sesStorage) {
-      const sesStorageObj = JSON.parse(sesStorage);
-      setOwnedPokemon(sesStorageObj.ownedPokemon);
-    }
-    console.log("ownedPokemon huahah", sesStorage);
+    loadOwnedPokemon();
   }, []);
 
   const onBack = () => {
@@ -84,6 +84,7 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
         }
         itemData={{
           ownedPokemon: ownedPokemon,
+          loadOwnedPokemon: loadOwnedPokemon,
         }}
       >
         {Row}
