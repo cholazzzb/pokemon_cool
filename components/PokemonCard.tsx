@@ -83,7 +83,7 @@ const PokemonCard: FC<ICardProps> = (props) => {
             <TypeChip key={idx} type={type.type.name} />
           ))}
       </div>
-      <PokeImage type={data.pokemon.types[0].type.name} image={artwork} size={75} />
+      <PokeImage type={data.pokemon.types[0].type.name} imgURL={artwork} size={75} />
     </div>
   );
 };

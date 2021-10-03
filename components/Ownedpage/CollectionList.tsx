@@ -26,6 +26,7 @@ interface IRowProps {
   index: number;
   style: any;
 }
+
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
   const { imgURL, attributes, loadOwnedPokemon, setSelectedPokeName, setReleasing } =
@@ -64,7 +65,7 @@ const Row: FC<IRowProps> = (props) => {
   return (
     <div css={ListItemStyle} style={style}>
       <div css={PokeImageStyle}>
-        <PokeImage type={"grass"} image={imgURL} size={0}/>
+        <PokeImage type={"grass"} imgURL={imgURL} size={0}/>
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>

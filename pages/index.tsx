@@ -6,36 +6,20 @@ import type { NextPage } from "next";
 import Head from "next/head";
 
 import { FC, useState, Dispatch, SetStateAction } from "react";
-import { useQuery, gql } from "@apollo/client";
 
 import Layout from "@components/Layout";
 import Listpage from "@components/Listpage/Listpage";
 import Detailpage from "@components/Detailpage/Detailpage";
 import Ownedpage from "@components/Ownedpage/Ownedpage";
 import Navigator from "@components/Navigator";
-import Search from "@components/Search";
 import { DETAILPAGE, LISTPAGE, OWNEDPAGE } from "@constants/route";
+import useQueryPokemons from "hooks/useQueryPokemons";
 
 const color = "white";
 
 const example = css`
   &:hover {
     color: ${color};
-  }
-`;
-
-const GET_POKEMONS = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      results {
-        id
-        name
-        image
-        artwork
-        dreamworld
-      }
-    }
   }
 `;
 
@@ -101,9 +85,7 @@ const Home: NextPage = () => {
   const [currentId, setCurrentId] = useState<number>(1);
   const [currentName, setCurrentName] = useState<string>("");
 
-  const { loading, error, data } = useQuery(GET_POKEMONS, {
-    variables: { limit: 1000, offset: 0 },
-  });
+  const { loading, error, data } = useQueryPokemons()
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
@@ -127,7 +109,6 @@ const Home: NextPage = () => {
           setCurrentName={setCurrentName}
         />
         <Navigator currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        <Search />
       </Layout>
     </div>
   );

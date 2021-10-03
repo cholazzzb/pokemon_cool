@@ -7,7 +7,9 @@ import { FC, Fragment, useState } from "react";
 
 const OverlayStyle = css`
   z-index: 50;
-  position: absolute;
+  position: fixed;
+  top: 0px;
+  left: 0px;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -38,18 +40,19 @@ const AlertBodyStyle = css`
 
 interface IAlertProps {
   headText: string;
-  children: any;
   level: string;
+  children: any;
 }
 
 const Alert: FC<IAlertProps> = (props) => {
+  const {headText, level} = props
   const [show, setShow] = useState<boolean>(true);
 
   const onClose = () => {
     setShow(false);
   };
   let primColor, secondColor;
-  switch (props.level) {
+  switch (level) {
     case "danger":
       primColor = "red";
       secondColor = "red";
@@ -69,10 +72,10 @@ const Alert: FC<IAlertProps> = (props) => {
     position: absolute;
     bottom: 0%;
     height: 60%;
+    width: 100%;
     background-color: white;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-    padding: 20px;
   `;
 
   if (!show) return <Fragment></Fragment>;
@@ -82,7 +85,7 @@ const Alert: FC<IAlertProps> = (props) => {
       <div css={AlertStyle}>
         <div css={CloseContainerStyle}>
           <div css={CloseIconStyle}></div>
-          <div css={HeadTextStyle}>{props.headText}</div>
+          <div css={HeadTextStyle}>{headText}</div>
           <div css={CloseIconStyle}>
             <span onClick={onClose}>
               <FontAwesomeIcon icon={faTimes} />

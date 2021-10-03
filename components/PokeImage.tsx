@@ -1,18 +1,19 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import useFetchPokeImage from "hooks/useFetchPokeImage";
 import Image from "next/image";
-import { useEffect, useState, FC } from "react";
+import { FC } from "react";
 import { getSecondaryColorFromType } from "./util";
 
 interface ImageProps {
   type: string;
-  image: string;
+  imgURL: string;
   size: number;
 }
 
 const PokeImage: FC<ImageProps> = (props) => {
-  const { type, size } = props;
+  const { type, imgURL, size } = props;
   const bgColor = getSecondaryColorFromType(type);
 
   const ImageBackgroundStyle = css`
@@ -25,57 +26,22 @@ const PokeImage: FC<ImageProps> = (props) => {
   const ImageStyle = css`
     position: relative;
     border-radius: 9999px;
-    width: ${size+40}px;
-    height: ${size+40}px;
+    width: ${size + 40}px;
+    height: ${size + 40}px;
     transform: translateX(-20px) translateY(15px);
     transform-origin: bottom;
   `;
 
-  const [image, setImage] = useState({
-    blobAddress: "",
-    status: "loading",
-  });
+  const image = useFetchPokeImage(imgURL);
 
-  const getImage = async () => {
-    await fetch(`${props.image}`, { method: "GET" })
-      .then(function (response) {
-        return response.blob();
-      })
-      .then(function (blob) {
-        if (blob.type === "image/png") {
-          setImage({
-            blobAddress: URL.createObjectURL(blob),
-            status: "success",
-          });
-        } else {
-          setImage({
-            blobAddress: "",
-            status: "error",
-          });
-        }
-      });
-  };
-
-  useEffect(() => {
-    getImage();
-  }, []);
-
-  if (image.status === "loading") return <div css={ImageStyle}>Loading </div>;
-
-  if (image.status === "error")
-    return (
-      <div css={ImageStyle}>
-        Failed to Fetch image
-        <button onClick={getImage}>Retry</button>
-      </div>
-    );
+  if (image === null) return <div>Failed Fetch Image</div>;
 
   return (
     <div css={ImageBackgroundStyle}>
       <div css={ImageStyle}>
         <Image
           data-testid="pokemon-image"
-          src={image.blobAddress}
+          src={image}
           alt="pokemon"
           layout="fill"
         />
