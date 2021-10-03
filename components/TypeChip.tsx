@@ -2,18 +2,22 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
+import TypeIcon from "./TypeIcon";
 import { getSecondaryColorFromType } from "./util";
 
-interface ChipProps {
+interface IChipProps {
   type: string;
 }
 
-const TypeChip: FC<ChipProps> = (props) => {
+const TypeChip: FC<IChipProps> = (props) => {
   const { type } = props;
   const bgColor = getSecondaryColorFromType(type);
 
   const ChipStyle = css`
-    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
     padding: 8px;
     border-radius: 12px;
     background-color: ${bgColor};
@@ -25,7 +29,12 @@ const TypeChip: FC<ChipProps> = (props) => {
     text-transform: capitalize;
   `;
 
-  return <div css={ChipStyle}>{type}</div>;
+  return (
+    <div data-testid="typechip-label" css={ChipStyle}>
+      <TypeIcon type={type} />
+      {type}
+    </div>
+  );
 };
 
 export default TypeChip;

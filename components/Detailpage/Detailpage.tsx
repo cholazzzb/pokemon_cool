@@ -2,129 +2,46 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { Dispatch, FC, SetStateAction, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { FC, useState } from "react";
 
-import TabAbout from "./TabAbout";
-import TabBaseStats from "./TabBaseStats";
+import {
+  getPrimaryColorFromType,
+  getSecondaryColorFromType,
+} from "@components/util";
+import Header from "@components/Header";
+
+import Tab from "./Tab";
 import TabContainer from "./TabContainer";
-import TabEvolution from "./TabEvolution";
-import TabMoves from "./TabMoves";
 import Overview from "./Overview";
+import CatchPokemon from "./CatchPokemon";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { ALLPOKEMON } from "@constants/route";
-import { getPrimaryColorFromType } from "@components/util";
-
-interface HeaderProps {
-  setPage: Dispatch<SetStateAction<string>>;
-}
-const Header: FC<HeaderProps> = (props) => {
-  const { setPage } = props;
-
-  const HeaderStyle = css`
-    color: white;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    padding: 10px;
-  `;
-
-  return (
-    <div css={HeaderStyle}>
-      <span onClick={() => setPage(ALLPOKEMON)}>
-        <FontAwesomeIcon icon={faChevronLeft} />
-      </span>
-      <span>Catch Pokemon</span>
-    </div>
-  );
-};
-
-interface TabProps {
-  currentTab: number;
-  id: number;
-  name: string;
-  height: string;
-  weight: string;
-  abilities: any;
-  stats: any;
-  moves:any;
-}
-const Tab: FC<TabProps> = (props) => {
-  const { currentTab, id, name, height, weight, abilities, stats, moves } =
-    props;
-  switch (currentTab) {
-    case 0:
-      return <TabAbout name={name} height={height} weight={weight} abilities={abilities}  />;
-    case 1: 
-      return <TabBaseStats stats={stats} />;
-    case 2:
-      return <TabEvolution id={id} name={name} />;
-    case 3:
-      return <TabMoves moves={moves} />;
-    default:
-      return <></>;
-  }
-};
-
-const GET_POKEMON_DETAIL = gql`
-  query Pokemon($name: String!) {
-    pokemon(name: $name) {
-      types {
-        slot
-        type {
-          id
-          url
-          name
-        }
-      }
-      height
-      weight
-      abilities {
-        ability {
-          url
-          name
-        }
-      }
-      stats {
-        base_stat
-        stat {
-          name
-        }
-      }
-      moves {
-        move {
-          url
-          name
-        }
-      }
-    }
-  }
-`;
+import useQueryPokeDetail from "hooks/useQueryPokeDetail";
 
 interface DetailPageProps {
   id: number;
   name: string;
-  setPage: React.Dispatch<React.SetStateAction<string>>;
+  imgURL: string;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Detailpage: FC<DetailPageProps> = (props) => {
-  const { id, name, setPage } = props;
+  const { id, name, imgURL, setCurrentPage } = props;
+  const onBack = () => {
+    setCurrentPage("LISTPAGE");
+  };
 
   const [currentTab, setCurrentTab] = useState(0);
-  const { loading, error, data } = useQuery(GET_POKEMON_DETAIL, {
-    variables: { name },
-  });
+  const { loading, error, data } = useQueryPokeDetail(name);
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
 
   const { types, ...others } = data.pokemon;
 
-  const bgColor = getPrimaryColorFromType(types[0].type.name);
+  const primColor = getPrimaryColorFromType(types[0].type.name);
+  const seconColor = getSecondaryColorFromType(types[0].type.name);
   const DetailpageStyle = css`
-    background-color: ${bgColor};
+    background-color: ${primColor};
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -132,11 +49,16 @@ const Detailpage: FC<DetailPageProps> = (props) => {
 
   return (
     <div css={DetailpageStyle}>
-      <Header setPage={setPage} />
-      <Overview id={id} name={name} types={types} />
-      <TabContainer currentTab={currentTab} setCurrentTab={setCurrentTab}>
+      <Header caption="" onBack={onBack} />
+      <Overview id={id} name={name} imgURL={imgURL} types={types} />
+      <TabContainer
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        primColor={primColor}
+      >
         <Tab currentTab={currentTab} id={id} name={name} {...others} />
       </TabContainer>
+      <CatchPokemon iconColor={seconColor} pokemonName={name} imgURL={imgURL} />
     </div>
   );
 };

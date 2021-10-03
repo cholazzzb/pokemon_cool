@@ -1,92 +1,55 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { jsx } from "@emotion/react";
 
-import { FC, useState, Dispatch, SetStateAction } from "react";
+import { FC, Dispatch, SetStateAction } from "react";
 
-import { useQuery, gql } from "@apollo/client";
+import Header from "@components/Header";
+import RingGraph from "./PieChart";
+import PokemonList from "./PokemonList";
+import Search from "@components/Search";
 
-import Detailpage from "@components/Detailpage/Detailpage";
-import AllPokemon from "@components/AllPokemon/AllPokemon";
-import { ALLPOKEMON, DETAILPAGE } from "@constants/route";
+const PieChartDataDummy = [
+  {
+    name: "bulbasaur",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }, { name: "BOBA" }],
+  },
+  {
+    name: "chimcar",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }],
+  },
+  {
+    name: "geodude",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }],
+  },
+];
 
-const GET_POKEMONS = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      results {
-        id
-        name
-        image
-        artwork
-        dreamworld
-      }
-    }
-  }
-`;
-
-interface ContentPropsType {
+interface IListPage {
   pokemons: any;
-  page: string;
-  setPage: Dispatch<SetStateAction<string>>;
-  currentId: number;
+  setCurrentPage: Dispatch<SetStateAction<string>>;
   setCurrentId: Dispatch<SetStateAction<number>>;
-  currentName: string;
   setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
-const Content: FC<ContentPropsType> = (props) => {
-  const {
-    pokemons,
-    page,
-    setPage,
-    currentId,
-    setCurrentId,
-    currentName,
-    setCurrentName,
-  } = props;
-
-  switch (page) {
-    case ALLPOKEMON:
-      return (
-        <AllPokemon
-          pokemons={pokemons}
-          setPage={setPage}
-          setCurrentId={setCurrentId}
-          setCurrentName={setCurrentName}
-        />
-      );
-
-    case DETAILPAGE:
-      return <Detailpage setPage={setPage} id={currentId} name={currentName} />;
-
-    default:
-      return <></>;
-  }
-};
-
-const Listpage = () => {
-  const [page, setPage] = useState<string>("ALLPOKEMON");
-  const [currentId, setCurrentId] = useState<number>(1);
-  const [currentName, setCurrentName] = useState<string>("");
-
-  const { loading, error, data } = useQuery(GET_POKEMONS, {
-    variables: { limit: 1000, offset: 0 },
-  });
-
-  if (loading) return <div>Loading</div>;
-  if (error) return <div>Error</div>;
+const Listpage: FC<IListPage> = (props) => {
+  const { pokemons, setCurrentPage, setCurrentId, setCurrentName } = props;
 
   return (
-    <Content
-      page={page}
-      setPage={setPage}
-      currentId={currentId}
-      setCurrentId={setCurrentId}
-      currentName={currentName}
-      setCurrentName={setCurrentName}
-      pokemons={data.pokemons}
-    />
+    <div style={{ padding: 10 }}>
+      <Header caption="Total Owned:" />
+      <RingGraph data={PieChartDataDummy} />
+      <Header caption="Pokemon List:" />
+      <PokemonList
+        pokemons={pokemons}
+        setCurrentPage={setCurrentPage}
+        setCurrentId={setCurrentId}
+        setCurrentName={setCurrentName}
+      />
+      <Search />
+    </div>
   );
 };
 

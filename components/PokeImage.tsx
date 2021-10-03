@@ -1,66 +1,51 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import useFetchPokeImage from "hooks/useFetchPokeImage";
 import Image from "next/image";
-import { useEffect, useState, FC } from "react";
+import { FC } from "react";
 import { getSecondaryColorFromType } from "./util";
 
 interface ImageProps {
   type: string;
-  image: string;
+  imgURL: string;
+  size: number;
 }
 
 const PokeImage: FC<ImageProps> = (props) => {
-  const { type } = props;
+  const { type, imgURL, size } = props;
   const bgColor = getSecondaryColorFromType(type);
+
+  const ImageBackgroundStyle = css`
+    background-color: ${bgColor};
+    border-radius: 9999px;
+    width: ${size}px;
+    height: ${size}px;
+  `;
 
   const ImageStyle = css`
     position: relative;
-    background-color: ${bgColor};
     border-radius: 9999px;
-    width: 75px;
-    height: 75px;
-    transform: translateX(0px) translateY(15px);
-    transform-origin: bottom right;
+    width: ${size + 40}px;
+    height: ${size + 40}px;
+    transform: translateX(-20px) translateY(15px);
+    transform-origin: bottom;
   `;
 
-  const [image, setImage] = useState({
-    blobAddress: "",
-    success: false,
-  });
+  const image = useFetchPokeImage(imgURL);
 
-  useEffect(() => {
-    (async () => {
-      await fetch(
-        `${props.image}`,
-        { method: "GET" }
-      )
-        .then(function (response) {
-          return response.blob();
-        })
-        .then(function (blob) {
-          if (blob.type === "image/png") {
-            setImage({
-              blobAddress: URL.createObjectURL(blob),
-              success: true,
-            });
-          } else {
-            setImage({
-              blobAddress: "",
-              success: false,
-            });
-          }
-        });
-    })();
-  }, []);
+  if (image === null) return <div>Failed Fetch Image</div>;
 
   return (
-    <div css={ImageStyle}>
-      {image.success ? (
-        <Image src={image.blobAddress} alt="pokemon" layout="fill" />
-      ) : (
-        <p>Failed to load image</p>
-      )}
+    <div css={ImageBackgroundStyle}>
+      <div css={ImageStyle}>
+        <Image
+          data-testid="pokemon-image"
+          src={image}
+          alt="pokemon"
+          layout="fill"
+        />
+      </div>
     </div>
   );
 };

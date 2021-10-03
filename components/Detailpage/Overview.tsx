@@ -9,6 +9,7 @@ import TypeChip from "@components/TypeChip";
 interface OverviewProps {
   id: number;
   name: string;
+  imgURL: string;
   types: any;
 }
 
@@ -20,7 +21,7 @@ const InformationStyle = css`
 `;
 
 const NameStyle = css`
-  font-size: 15px;
+  font-size: 30px;
   font-weight: 700;
   line-height: 1px;
   text-transform: capitalize;
@@ -33,18 +34,15 @@ const TypesStyle = css`
 const ImageStyle = css`
   display: flex;
   justify-content: center;
-  height: 50px;
+  height: 200px;
+`;
+const OverviewStyle = css`
+  color: white;
+  padding: 0px 20px 10px 20px;
 `;
 
 const Overview: FC<OverviewProps> = (props) => {
-  const { id, name, types } = props;
-
-  const OverviewStyle = css`
-    color: white;
-    padding: 10px 20px;
-  `;
-
-  console.log("OVERVIEW", types);
+  const { id, name, imgURL, types } = props;
 
   return (
     <div css={OverviewStyle}>
@@ -53,15 +51,18 @@ const Overview: FC<OverviewProps> = (props) => {
           <p css={NameStyle}>{name}</p>
           <div css={TypesStyle}>
             {types.map((type: any) => (
-              <TypeChip key="" type={type.type.name} />
+              <TypeChip key={type.type.name} type={type.type.name} />
             ))}
           </div>
         </div>
-        <p>Id: {id}</p>
+        <p>#{id}</p>
       </div>
       <div css={ImageStyle}>
-        Image
-        {/* <PokeImage name={props.name}/> */}
+        <PokeImage
+          type={types[0].type.name}
+          imgURL={imgURL}
+          size={200}
+        />
       </div>
     </div>
   );

@@ -12,11 +12,11 @@ const LayoutStyle2 = css`
   align-items: center;
 `;
 
-interface LayoutProps {
+interface ILayoutProps {
   children: any;
 }
 
-const Layout: FC<LayoutProps> = (props) => {
+const Layout: FC<ILayoutProps> = (props) => {
 
   const LayoutStyle = css`
     position: relative;

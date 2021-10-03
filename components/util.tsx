@@ -1,5 +1,5 @@
 export const getPrimaryColorFromType = (type: string) => {
-  const colors: { [key: string]: string } = {
+  const primaryColors: { [key: string]: string } = {
     normal: "#a8a878",
     fire: "#f36b6c",
     fighting: "#c03528",
@@ -7,7 +7,7 @@ export const getPrimaryColorFromType = (type: string) => {
     flying: "#a890f0",
     grass: "#56d0b0",
     poison: "#a14ca0",
-    electric: "",
+    electric: "#ffd76f",
     ground: "#e0c068",
     psychic: "#f15687",
     rock: "#b8a038",
@@ -16,13 +16,14 @@ export const getPrimaryColorFromType = (type: string) => {
     dragon: "#776bf8",
     ghost: "#705898",
     dark: "#705848",
-    steel: "b8b8d0",
+    steel: "#b8b8d0",
+    fairy: "#e5c7d6",
   };
-  return colors[type];
+  return primaryColors[type];
 };
 
 export const getSecondaryColorFromType = (type: string) => {
-  const colors: { [key: string]: string } = {
+  const secondaryColors: { [key: string]: string } = {
     normal: "#a8a878",
     fire: "#f47a7b",
     fighting: "#c03528",
@@ -30,7 +31,7 @@ export const getSecondaryColorFromType = (type: string) => {
     flying: "#a890f0",
     grass: "#59dbc0",
     poison: "#a14ca0",
-    electric: "",
+    electric: "#fcd773",
     ground: "#e0c068",
     psychic: "#f15687",
     rock: "#b8a038",
@@ -39,7 +40,8 @@ export const getSecondaryColorFromType = (type: string) => {
     dragon: "#776bf8",
     ghost: "#705898",
     dark: "#705848",
-    steel: "b8b8d0",
+    steel: "#b8b8d0",
+    fairy: "#c2617f",
   };
-  return colors[type];
+  return secondaryColors[type];
 };

@@ -50,7 +50,7 @@ const TabAbout: FC<TabAboutProps> = (props) => {
         <p css={LabelStyle}> Abilities</p>
         {abilities.map(
           (ability: { [key: string]: { [key: string]: string } }) => (
-            <p css={DataStyle}>{ability.ability.name}, </p>
+            <p key={ability.ability.name} css={DataStyle}>{ability.ability.name}, </p>
           )
         )}
       </div>
