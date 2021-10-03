@@ -1,31 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
+import { css, jsx } from "@emotion/react";
 
 import { FC, Dispatch, SetStateAction } from "react";
 
 import Header from "@components/Header";
-import RingGraph from "./PieChart";
 import PokemonList from "./PokemonList";
-import Search from "@components/Search";
 
-const PieChartDataDummy = [
-  {
-    name: "bulbasaur",
-    imgURL: "",
-    attributes: [{ name: "BOBI" }, { name: "BOBA" }],
-  },
-  {
-    name: "chimcar",
-    imgURL: "",
-    attributes: [{ name: "BOBI" }],
-  },
-  {
-    name: "geodude",
-    imgURL: "",
-    attributes: [{ name: "BOBI" }],
-  },
-];
+const ListPageStyle = css`
+  padding: 10px;
+  height: 100%;
+`;
 
 interface IListPage {
   pokemons: any;
@@ -38,17 +23,14 @@ const Listpage: FC<IListPage> = (props) => {
   const { pokemons, setCurrentPage, setCurrentId, setCurrentName } = props;
 
   return (
-    <div style={{ padding: 10 }}>
-      <Header caption="Total Owned:" />
-      <RingGraph data={PieChartDataDummy} />
-      <Header caption="Pokemon List:" />
+    <div css={ListPageStyle}>
+      <Header caption="Pokemon List" />
       <PokemonList
         pokemons={pokemons}
         setCurrentPage={setCurrentPage}
         setCurrentId={setCurrentId}
         setCurrentName={setCurrentName}
       />
-      <Search />
     </div>
   );
 };

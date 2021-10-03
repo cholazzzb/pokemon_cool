@@ -7,23 +7,39 @@ import Header from "@components/Header";
 import { LISTPAGE } from "@constants/route";
 import OwnedPokemonList from "./OwnedPokemonList";
 import CollectionList from "./CollectionList";
+
 import { getOwnedPokemonData, getTotalPokemon } from "@utils/session";
 import OwnedPokemon from "@utils/OwnedPokemon";
+
+import PieChart from "./PieChart"
+
+const PieChartDataDummy = [
+  {
+    name: "bulbasaur",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }, { name: "BOBA" }],
+  },
+  {
+    name: "chimcar",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }],
+  },
+  {
+    name: "geodude",
+    imgURL: "",
+    attributes: [{ name: "BOBI" }],
+  },
+];
+
 
 interface IOwnedpage {
   name: string;
   imgURL: string;
-  setCurrentPage: Dispatch<SetStateAction<string>>;
 }
 
 const Ownedpage: FC<IOwnedpage> = (props) => {
-  const { setCurrentPage } = props;
   const [ownedPokemonData, setOwnedPokemonData] = useState<any[]>([]);
   const [currPokemonIdx, setCurrPokemonIdx] = useState<number | null>(null);
-
-  const onBack = () => {
-    setCurrentPage(LISTPAGE);
-  };
 
   const loadOwnedPokemon = () => {
     const sessStorage = getOwnedPokemonData(window);
@@ -49,7 +65,8 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
         width: 100%;
       `}
     >
-      <Header caption="Owned Pokemon" onBack={onBack} />
+      <Header caption="Total Owned:" />
+      <PieChart data={PieChartDataDummy} />
       {ownedPokemonData?.length > 0 && (
         <OwnedPokemonList
           ownedPokemon={ownedPokemonData}

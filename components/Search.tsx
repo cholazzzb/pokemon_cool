@@ -6,21 +6,21 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SearchContainerStyle = css`
-  z-index: 20;
   display: flex;
-  width: 100%;
-  height: 100%;
-  background-color: blue;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  padding: 5px;
+  color: gray;
 `;
 
-const SearchButtonStyle = css`
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  width: 70px;
-  height: 70px;
-  border-radius: 9999px;
+const IconStyle = css`
   display: flex;
+  width: 40px;
+  height: 40px;
   justify-content: center;
   align-items: center;
 `;
@@ -28,14 +28,11 @@ const SearchButtonStyle = css`
 const Search = () => {
   const [open, setOpen] = useState(false);
   return (
-    <div>
-      <button css={SearchButtonStyle}>
-        <span style={{ width: 20, height: 20 }}>
-          <FontAwesomeIcon icon={faSearch} />
-        </span>
-      </button>
-
-      {open && <div css={SearchContainerStyle}>Searching</div>}
+    <div css={SearchContainerStyle}>
+      <span css={IconStyle}>
+        <FontAwesomeIcon icon={faSearch} size="2x" />
+      </span>
+      Search
     </div>
   );
 };

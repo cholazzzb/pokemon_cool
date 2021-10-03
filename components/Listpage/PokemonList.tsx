@@ -5,6 +5,7 @@ import { DETAILPAGE } from "@constants/route";
 import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 
+import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 
 const ListStyle = css`
@@ -66,35 +67,26 @@ interface IPokemonList {
 const PokemonList: FC<IPokemonList> = (props) => {
   const { pokemons, setCurrentPage, setCurrentId, setCurrentName } = props;
 
-  const [windowDimension, setWindowDimension] = useState({
-    width: 1000,
-    height: 666,
-  });
-
-  useEffect(() => {
-    const { innerWidth: width, innerHeight: height } = window;
-    console.log(width, height);
-    setWindowDimension({ width, height });
-  }, []);
-
   return (
-    <List
-      css={ListStyle}
-      height={windowDimension.height - 350}
-      itemCount={pokemons.count}
-      itemSize={200}
-      width={
-        windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
-      }
-      itemData={{
-        pokemons: pokemons,
-        setCurrentPage: setCurrentPage,
-        setCurrentId: setCurrentId,
-        setCurrentName: setCurrentName,
-      }}
-    >
-      {Row}
-    </List>
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            css={ListStyle}
+            height={height}
+            width={width}
+            itemCount={pokemons.count}
+            itemSize={200}
+            itemData={{
+              pokemons: pokemons,
+              setCurrentPage: setCurrentPage,
+              setCurrentId: setCurrentId,
+              setCurrentName: setCurrentName,
+            }}
+          >
+            {Row}
+          </List>
+        )}
+      </AutoSizer>
   );
 };
 

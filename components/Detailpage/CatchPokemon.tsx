@@ -3,11 +3,10 @@
 import { css, jsx } from "@emotion/react";
 
 import { FC, useState } from "react";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import SuccessAlert from "./SuccessAlert";
 import FailedAlert from "./FailedAlert";
+import Image from "next/image";
 
 const CatchPokemonStyle = css`
   position:fixed;
@@ -46,13 +45,14 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
         <SuccessAlert
           pokemonName={pokemonName}
           imgURL={imgURL}
+          color={iconColor}
           setCatchStatus={setCatchStatus}
         />
       );
       break;
 
     case "FAILED":
-      Alert = <FailedAlert />;
+      Alert = <FailedAlert iconColor={iconColor} catchPokemon={catchPokemon} />;
       break;
 
     default:
@@ -74,7 +74,7 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
   return (
     <div css={CatchPokemonStyle}>
       <span css={CatchIconStyle} onClick={catchPokemon}>
-        <FontAwesomeIcon icon={faPlus} />
+        <Image src="/pokeball.svg" width={30} height={30} />
         Catch!
       </span>
       {catchStatus && Alert}

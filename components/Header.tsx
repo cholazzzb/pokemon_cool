@@ -26,11 +26,12 @@ const IconStyle = css`
 `;
 
 const CaptionStyle = css`
+  display: flex;
+  justify-content:center;
   color: black;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 700;
   padding: 10px;
-  margin: 20px 0px;
   max-height: 30px;
   width: 70%;
 `;
