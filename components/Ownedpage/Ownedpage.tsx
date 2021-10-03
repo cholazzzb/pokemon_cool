@@ -5,41 +5,43 @@ import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import Header from "@components/Header";
 import { LISTPAGE } from "@constants/route";
-import { getOwnedPokemonData } from "@utils/session";
-import OwnedPokemonList from "./OwnedCollectionList";
+import OwnedPokemonList from "./OwnedPokemonList";
 import CollectionList from "./CollectionList";
+import { getOwnedPokemonData, getTotalPokemon } from "@utils/session";
+import OwnedPokemon from "@utils/OwnedPokemon";
 
 interface IOwnedpage {
   name: string;
   imgURL: string;
   setCurrentPage: Dispatch<SetStateAction<string>>;
-  setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
 const Ownedpage: FC<IOwnedpage> = (props) => {
-  const { setCurrentPage, setCurrentName } = props;
-  const [ownedPokemon, setOwnedPokemon] = useState<any[]>([]);
-
+  const { setCurrentPage } = props;
+  const [ownedPokemonData, setOwnedPokemonData] = useState<any[]>([]);
   const [currPokemonIdx, setCurrPokemonIdx] = useState<number | null>(null);
 
   const onBack = () => {
     setCurrentPage(LISTPAGE);
   };
 
-  useEffect(() => {
-    console.log("?", currPokemonIdx);
-    currPokemonIdx !== null ? console.log("ownDEDSDF", ownedPokemon) : null;
-  }, [ownedPokemon, currPokemonIdx]);
-
   const loadOwnedPokemon = () => {
-    if (currPokemonIdx) {
+    const sessStorage = getOwnedPokemonData(window);
+    let ownedPokemon = new OwnedPokemon(sessStorage);
+    console.log(ownedPokemon.data, "sessMem");
+
+    if (ownedPokemon.data) {
+      setOwnedPokemonData(ownedPokemon.data);
+      setCurrPokemonIdx(0);
+    } else {
+      setOwnedPokemonData([]);
       setCurrPokemonIdx(null);
     }
-    const sesStorage = getOwnedPokemonData(window);
-    if (sesStorage) {
-      setOwnedPokemon(sesStorage);
-    }
   };
+
+  useEffect(() => {
+    loadOwnedPokemon();
+  }, []);
 
   return (
     <div
@@ -48,19 +50,22 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
       `}
     >
       <Header caption="Owned Pokemon" onBack={onBack} />
-      <OwnedPokemonList
-        ownedPokemon={ownedPokemon}
-        loadOwnedPokemon={loadOwnedPokemon}
-        setCurrPokemonIdx={setCurrPokemonIdx}
-      />
-      {currPokemonIdx !== null ? (
+      {ownedPokemonData?.length > 0 && (
+        <OwnedPokemonList
+          ownedPokemon={ownedPokemonData}
+          totalOwnedPokemon={getTotalPokemon(ownedPokemonData)}
+          loadOwnedPokemon={loadOwnedPokemon}
+          setCurrPokemonIdx={setCurrPokemonIdx}
+        />
+      )}
+      {ownedPokemonData?.length > 0 && typeof currPokemonIdx === "number" && (
         <CollectionList
-          pokemonName={ownedPokemon[currPokemonIdx].name}
-          imgURL={ownedPokemon[currPokemonIdx].imgURL}
-          attributes={ownedPokemon[currPokemonIdx].attributes}
+          pokemonName={ownedPokemonData[currPokemonIdx].name}
+          imgURL={ownedPokemonData[currPokemonIdx].imgURL}
+          attributes={ownedPokemonData[currPokemonIdx].attributes}
           loadOwnedPokemon={loadOwnedPokemon}
         />
-      ) : null}
+      )}
     </div>
   );
 };

@@ -45,7 +45,7 @@ interface IAlertProps {
 }
 
 const Alert: FC<IAlertProps> = (props) => {
-  const {headText, level} = props
+  const { headText, level } = props;
   const [show, setShow] = useState<boolean>(true);
 
   const onClose = () => {

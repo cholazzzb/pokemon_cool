@@ -1,7 +1,15 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+import Card from "@components/Card";
 import { css, jsx } from "@emotion/react";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { FixedSizeList as List } from "react-window";
 import PokemonInfo from "./PokemonInfo";
 
@@ -12,7 +20,6 @@ interface IRowProps {
 }
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-  console.log(data.ownedPokemon);
   const { ownedPokemon, loadOwnedPokemon, setCurrPokemonIdx } = data;
   return (
     <div onClick={() => setCurrPokemonIdx(index)} style={style}>
@@ -47,11 +54,17 @@ const ListStyle = css`
 
 interface IOwnedPokemonListProps {
   ownedPokemon: any;
+  totalOwnedPokemon: number;
   loadOwnedPokemon: () => void;
   setCurrPokemonIdx: Dispatch<SetStateAction<number | null>>;
 }
 const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
-  const { ownedPokemon, loadOwnedPokemon, setCurrPokemonIdx } = props;
+  const {
+    ownedPokemon,
+    totalOwnedPokemon,
+    loadOwnedPokemon,
+    setCurrPokemonIdx,
+  } = props;
   const [windowDimension, setWindowDimension] = useState({
     width: 1000,
     height: 666,
@@ -61,27 +74,29 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
     const { innerWidth: width, innerHeight: height } = window;
     console.log(width, height);
     setWindowDimension({ width, height });
-    loadOwnedPokemon();
   }, []);
 
   return (
-    <List
-      css={ListStyle}
-      height={200}
-      itemCount={ownedPokemon.length}
-      itemSize={330}
-      layout="horizontal"
-      width={
-        windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
-      }
-      itemData={{
-        ownedPokemon: ownedPokemon,
-        loadOwnedPokemon: loadOwnedPokemon,
-        setCurrPokemonIdx: setCurrPokemonIdx,
-      }}
-    >
-      {Row}
-    </List>
+    <Fragment>
+      <Card headText="Total Owned Pokemon" bodyText={totalOwnedPokemon.toString()} />
+      <List
+        css={ListStyle}
+        height={200}
+        itemCount={ownedPokemon.length}
+        itemSize={330}
+        layout="horizontal"
+        width={
+          windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
+        }
+        itemData={{
+          ownedPokemon: ownedPokemon,
+          loadOwnedPokemon: loadOwnedPokemon,
+          setCurrPokemonIdx: setCurrPokemonIdx,
+        }}
+      >
+        {Row}
+      </List>
+    </Fragment>
   );
 };
 

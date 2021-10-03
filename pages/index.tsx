@@ -61,7 +61,6 @@ const Content: FC<IContentProps> = (props) => {
           name={currentName}
           imgURL={pokemons.results[currentId - 1].artwork}
           setCurrentPage={setCurrentPage}
-          setCurrentName={setCurrentName}
         />
       );
 

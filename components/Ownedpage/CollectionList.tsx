@@ -29,12 +29,17 @@ interface IRowProps {
 
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-  const { imgURL, attributes, loadOwnedPokemon, setSelectedPokeName, setReleasing } =
-    data;
+  const {
+    imgURL,
+    attributes,
+    loadOwnedPokemon,
+    setSelectedPokeName,
+    triggerRelease,
+  } = data;
 
   const execute = (pokeName: string) => {
     setSelectedPokeName(pokeName);
-    setReleasing(true);
+    triggerRelease();
     loadOwnedPokemon();
   };
 
@@ -65,7 +70,7 @@ const Row: FC<IRowProps> = (props) => {
   return (
     <div css={ListItemStyle} style={style}>
       <div css={PokeImageStyle}>
-        <PokeImage type={"grass"} imgURL={imgURL} size={0}/>
+        <PokeImage type={"grass"} imgURL={imgURL} size={0} />
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>
@@ -106,14 +111,16 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
   const [selectedPokeName, setSelectedPokeName] = useState<string | null>(null);
   const [releasing, setReleasing] = useState<boolean>(false);
 
+  const triggerRelease = () => {
+    setReleasing(!releasing);
+  };
+
   const releasePokemon = (name: string) => {
-    if (releasing) {
-      const sessStorage = getOwnedPokemonData(window);
-      let ownedPokemon = new OwnedPokemon(sessStorage);
-      ownedPokemon.releasePokemon(name);
-      saveNewPokemon(window, ownedPokemon.data);
-      loadOwnedPokemon();
-    }
+    const sessStorage = getOwnedPokemonData(window);
+    let ownedPokemon = new OwnedPokemon(sessStorage);
+    ownedPokemon.releasePokemon(name);
+    saveNewPokemon(window, ownedPokemon.data);
+    loadOwnedPokemon();
   };
 
   useEffect(() => {
@@ -138,7 +145,7 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
           attributes: attributes,
           loadOwnedPokemon: loadOwnedPokemon,
           setSelectedPokeName: setSelectedPokeName,
-          setReleasing: setReleasing,
+          triggerRelease: triggerRelease,
         }}
       >
         {Row}
