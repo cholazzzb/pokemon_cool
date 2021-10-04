@@ -29,7 +29,7 @@ interface IPokemonInfoProps {
 }
 
 const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
-  const { data , loadOwnedPokemon} = props;
+  const {data , loadOwnedPokemon} = props;
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {

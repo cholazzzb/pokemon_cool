@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 import PokemonInfo from "./PokemonInfo";
 
@@ -25,7 +26,7 @@ const Row: FC<IRowProps> = (props) => {
     <div onClick={() => setCurrPokemonIdx(index)} style={style}>
       <PokemonInfo
         data={{
-          id: "",
+          id: ownedPokemon[index].id,
           name: ownedPokemon[index].name,
           artwork: ownedPokemon[index].imgURL,
         }}
@@ -78,24 +79,33 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
 
   return (
     <Fragment>
-      <Card headText="Total Owned Pokemon" bodyText={totalOwnedPokemon.toString()} />
-      <List
-        css={ListStyle}
-        height={200}
-        itemCount={ownedPokemon.length}
-        itemSize={330}
-        layout="horizontal"
-        width={
-          windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
-        }
-        itemData={{
-          ownedPokemon: ownedPokemon,
-          loadOwnedPokemon: loadOwnedPokemon,
-          setCurrPokemonIdx: setCurrPokemonIdx,
-        }}
-      >
-        {Row}
-      </List>
+      <div>
+      <Card
+        headText="Total Owned Pokemon"
+        bodyText={totalOwnedPokemon.toString()}
+        />
+        </div>
+      <div style={{ height: "100%" }}>
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              css={ListStyle}
+              height={height}
+              width={width}
+              itemCount={ownedPokemon.length}
+              itemSize={330}
+              layout="horizontal"
+              itemData={{
+                ownedPokemon: ownedPokemon,
+                loadOwnedPokemon: loadOwnedPokemon,
+                setCurrPokemonIdx: setCurrPokemonIdx,
+              }}
+            >
+              {Row}
+            </List>
+          )}
+        </AutoSizer>
+      </div>
     </Fragment>
   );
 };

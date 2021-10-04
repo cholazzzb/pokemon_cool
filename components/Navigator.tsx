@@ -10,20 +10,21 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
 import Search from "./Search";
 
 const NavigatorContainerStyle = css`
-  z-index: 10;
+  z-index: 0;
   display: flex;
   position: absolute;
   bottom: 0%;
   left: 0%;
   width: 100%;
+  height: 65px;
   justify-content: center;
   background-color: #f2f3f5;
 `;
 
 const IconStyle = css`
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   justify-content: center;
   align-items: center;
 `;
@@ -51,7 +52,9 @@ const Navigator: FC<INavigatorProps> = (props) => {
       align-items: center;
       width: 33%;
       padding: 5px;
+      margin-bottom: 10px;
       color: ${color};
+      font-size: 15px;
     `;
 
     return style;
@@ -64,7 +67,7 @@ const Navigator: FC<INavigatorProps> = (props) => {
         onClick={() => setCurrentPage(LISTPAGE)}
       >
         <span css={IconStyle}>
-          <FontAwesomeIcon icon={faBook} size="2x" />
+          <FontAwesomeIcon icon={faBook} size="1x" />
         </span>
         Pokemon List
       </div>
@@ -80,11 +83,11 @@ const Navigator: FC<INavigatorProps> = (props) => {
                 ? "/pokeballSelected.svg"
                 : "/pokeball.png"
             }
-            width={30}
-            height={30}
+            width={20}
+            height={20}
           />
         </span>
-        Owned Pokemon
+        Owned
       </div>
     </div>
   );

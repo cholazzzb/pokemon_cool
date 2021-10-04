@@ -27,6 +27,7 @@ const InputStyle = css`
 `;
 
 interface ISuccessAlertProps {
+  id: number;
   pokemonName: string;
   imgURL: string;
   color: string;
@@ -34,7 +35,7 @@ interface ISuccessAlertProps {
 }
 
 const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
-  const { pokemonName, imgURL, color, setCatchStatus } = props;
+  const { id, pokemonName, imgURL, color, setCatchStatus } = props;
 
   const onClose = () => {
     setCatchStatus(null);
@@ -53,7 +54,7 @@ const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
   const submitForm = () => {
     const sessStorage = getOwnedPokemonData(window);
     let ownedPokemon = new OwnedPokemon(sessStorage);
-    ownedPokemon.addPokemon(pokemonName, name, imgURL);
+    ownedPokemon.addPokemon(id, pokemonName, name, imgURL);
     saveNewPokemon(window, ownedPokemon.data);
     onClose();
   };

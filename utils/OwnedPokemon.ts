@@ -1,4 +1,5 @@
 export interface IOwnedPokemon {
+  id: number;
   name: string;
   imgURL: string;
   attributes: {
@@ -31,7 +32,12 @@ class OwnedPokemon {
     return false;
   }
 
-  addPokemon(pokemonName: string, name: string, imgURL: string): boolean {
+  addPokemon(
+    id: number,
+    pokemonName: string,
+    name: string,
+    imgURL: string
+  ): boolean {
     if (this.checkIfNameAlreadyExist(name)) {
       return false;
     }
@@ -45,6 +51,7 @@ class OwnedPokemon {
         });
       } else {
         this._data.push({
+          id: id,
           name: pokemonName,
           imgURL: imgURL,
           attributes: [{ name: name }],
@@ -53,6 +60,7 @@ class OwnedPokemon {
     } else {
       this._data = [
         {
+          id: id,
           name: pokemonName,
           imgURL: imgURL,
           attributes: [{ name: name }],
@@ -72,7 +80,7 @@ class OwnedPokemon {
       this._data.some((pokemon, pokeIdx) =>
         pokemon.attributes.some((attri: any, attriIdx: any) => {
           if (attri.name === name) {
-            console.log("CHECK THIS", attri.name, name, pokeIdx)
+            console.log("CHECK THIS", attri.name, name, pokeIdx);
             pokemonIdx = pokeIdx;
             nameIdx = attriIdx;
             return true;

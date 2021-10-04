@@ -57,10 +57,17 @@ const Content: FC<IContentProps> = (props) => {
 
     case OWNEDPAGE:
       return (
-        <Ownedpage
-          name={currentName}
-          imgURL={pokemons.results[currentId - 1].artwork}
-        />
+        <div
+          css={css`
+            margin: 0 0 65px 0;
+            height: 100%;
+          `}
+        >
+          <Ownedpage
+            name={currentName}
+            imgURL={pokemons.results[currentId - 1].artwork}
+          />
+        </div>
       );
 
     case DETAILPAGE:
@@ -83,7 +90,7 @@ const Home: NextPage = () => {
   const [currentId, setCurrentId] = useState<number>(1);
   const [currentName, setCurrentName] = useState<string>("");
 
-  const { loading, error, data } = useQueryPokemons()
+  const { loading, error, data } = useQueryPokemons();
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;

@@ -4,6 +4,7 @@ import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 
 const TabBodyStyle = css`
+  overflow:auto;
   padding: 10px;
 `;
 

@@ -21,13 +21,14 @@ const CatchPokemonStyle = css`
 `;
 
 interface ICatchPokemonProps {
+  id: number;
   iconColor: string;
   pokemonName: string;
   imgURL: string;
 }
 
 const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
-  const { iconColor, pokemonName, imgURL } = props;
+  const {id, iconColor, pokemonName, imgURL } = props;
   const [catchStatus, setCatchStatus] = useState<null | string>(null);
   const catchPokemon = async () => {
     const reset = async () => {
@@ -43,6 +44,7 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
     case "SUCCESS":
       Alert = (
         <SuccessAlert
+        id={id}
           pokemonName={pokemonName}
           imgURL={imgURL}
           color={iconColor}

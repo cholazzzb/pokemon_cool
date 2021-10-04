@@ -17,7 +17,6 @@ interface ILayoutProps {
 }
 
 const Layout: FC<ILayoutProps> = (props) => {
-
   const LayoutStyle = css`
     position: relative;
     z-index: 0;

@@ -58,7 +58,12 @@ const Detailpage: FC<DetailPageProps> = (props) => {
       >
         <Tab currentTab={currentTab} id={id} name={name} {...others} />
       </TabContainer>
-      <CatchPokemon iconColor={seconColor} pokemonName={name} imgURL={imgURL} />
+      <CatchPokemon
+        id={id}
+        iconColor={seconColor}
+        pokemonName={name}
+        imgURL={imgURL}
+      />
     </div>
   );
 };

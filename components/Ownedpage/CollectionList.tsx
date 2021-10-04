@@ -10,6 +10,7 @@ import OwnedPokemon from "@utils/OwnedPokemon";
 import { getOwnedPokemonData, saveNewPokemon } from "@utils/session";
 import { FC, useEffect, useState } from "react";
 
+import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 
 const ListItemStyle = css`
@@ -31,6 +32,7 @@ const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
   const {
     imgURL,
+    id,
     attributes,
     loadOwnedPokemon,
     setSelectedPokeName,
@@ -70,7 +72,7 @@ const Row: FC<IRowProps> = (props) => {
   return (
     <div css={ListItemStyle} style={style}>
       <div css={PokeImageStyle}>
-        <PokeImage type={"grass"} imgURL={imgURL} size={0} />
+        <PokeImage type={"grass"} id={id} imgURL={imgURL} size={0} />
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>
@@ -89,6 +91,7 @@ const Row: FC<IRowProps> = (props) => {
 };
 
 interface ICollectionListStyle {
+  id: string;
   pokemonName: string;
   imgURL: string;
   attributes: string[];
@@ -96,7 +99,7 @@ interface ICollectionListStyle {
 }
 
 const CollectionList: FC<ICollectionListStyle> = (props) => {
-  const { pokemonName, imgURL, attributes, loadOwnedPokemon } = props;
+  const { id, pokemonName, imgURL, attributes, loadOwnedPokemon } = props;
   const [windowDimension, setWindowDimension] = useState({
     width: 1000,
     height: 666,
@@ -133,23 +136,26 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
   return (
     <div>
       <Card headText={pokemonName} bodyText={attributes.length + " pokemons"} />
-      <List
-        height={150}
-        itemCount={attributes.length}
-        itemSize={60}
-        width={
-          windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
-        }
-        itemData={{
-          imgURL: imgURL,
-          attributes: attributes,
-          loadOwnedPokemon: loadOwnedPokemon,
-          setSelectedPokeName: setSelectedPokeName,
-          triggerRelease: triggerRelease,
-        }}
-      >
-        {Row}
-      </List>
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            height={height}
+            width={width}
+            itemCount={attributes.length}
+            itemSize={60}
+            itemData={{
+              imgURL: imgURL,
+              id: id,
+              attributes: attributes,
+              loadOwnedPokemon: loadOwnedPokemon,
+              setSelectedPokeName: setSelectedPokeName,
+              triggerRelease: triggerRelease,
+            }}
+          >
+            {Row}
+          </List>
+        )}
+      </AutoSizer>
     </div>
   );
 };

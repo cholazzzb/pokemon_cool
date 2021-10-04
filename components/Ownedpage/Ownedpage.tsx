@@ -2,16 +2,15 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import Header from "@components/Header";
-import { LISTPAGE } from "@constants/route";
 import OwnedPokemonList from "./OwnedPokemonList";
 import CollectionList from "./CollectionList";
 
 import { getOwnedPokemonData, getTotalPokemon } from "@utils/session";
 import OwnedPokemon from "@utils/OwnedPokemon";
 
-import PieChart from "./PieChart"
+import PieChart from "./PieChart";
 
 const PieChartDataDummy = [
   {
@@ -31,6 +30,19 @@ const PieChartDataDummy = [
   },
 ];
 
+const EmptyStyle = css`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 4px 0px;
+`;
+
+const BodyStyle = css`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+`;
 
 interface IOwnedpage {
   name: string;
@@ -63,26 +75,35 @@ const Ownedpage: FC<IOwnedpage> = (props) => {
     <div
       css={css`
         width: 100%;
+        height: 100%;
+        overflow: auto;
       `}
     >
       <Header caption="Total Owned:" />
-      <PieChart data={PieChartDataDummy} />
-      {ownedPokemonData?.length > 0 && (
-        <OwnedPokemonList
-          ownedPokemon={ownedPokemonData}
-          totalOwnedPokemon={getTotalPokemon(ownedPokemonData)}
-          loadOwnedPokemon={loadOwnedPokemon}
-          setCurrPokemonIdx={setCurrPokemonIdx}
-        />
-      )}
-      {ownedPokemonData?.length > 0 && typeof currPokemonIdx === "number" && (
-        <CollectionList
-          pokemonName={ownedPokemonData[currPokemonIdx].name}
-          imgURL={ownedPokemonData[currPokemonIdx].imgURL}
-          attributes={ownedPokemonData[currPokemonIdx].attributes}
-          loadOwnedPokemon={loadOwnedPokemon}
-        />
-      )}
+      <div css={BodyStyle}>
+        {ownedPokemonData?.length > 0 ? (
+          <Fragment>
+            <PieChart data={PieChartDataDummy} />
+            <OwnedPokemonList
+              ownedPokemon={ownedPokemonData}
+              totalOwnedPokemon={getTotalPokemon(ownedPokemonData)}
+              loadOwnedPokemon={loadOwnedPokemon}
+              setCurrPokemonIdx={setCurrPokemonIdx}
+            />
+          </Fragment>
+        ) : (
+          <div css={EmptyStyle}>You don't have any pokemon yet</div>
+        )}
+        {ownedPokemonData?.length > 0 && typeof currPokemonIdx === "number" && (
+          <CollectionList
+            id={ownedPokemonData[currPokemonIdx].id}
+            pokemonName={ownedPokemonData[currPokemonIdx].name}
+            imgURL={ownedPokemonData[currPokemonIdx].imgURL}
+            attributes={ownedPokemonData[currPokemonIdx].attributes}
+            loadOwnedPokemon={loadOwnedPokemon}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@
 import PokemonCard from "@components/PokemonCard";
 import { DETAILPAGE } from "@constants/route";
 import { css, jsx } from "@emotion/react";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
