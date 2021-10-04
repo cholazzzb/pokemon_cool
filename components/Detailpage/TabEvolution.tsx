@@ -15,7 +15,7 @@ const GET_POKEMON_MOVES = gql`
 `;
 
 interface TabEvolutionProps {
-  id: number;
+  currentId: number;
   name: string;
 }
 

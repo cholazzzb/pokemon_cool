@@ -18,7 +18,6 @@ import {
   faKiss,
   faLeaf,
   faMoon,
-  faQuestion,
   faSkullCrossbones,
   faSnowflake,
   faTint,
@@ -58,8 +57,9 @@ const TypeIcon: FC<ITypeIcon> = (props) => {
     <span
       css={css`
         display: flex;
-        width: 15px;
-        height: 15px;
+        width: 10px;
+        height: 10px;
+        padding: 2px;
         justify-content: center;
         align-items: center;
       `}

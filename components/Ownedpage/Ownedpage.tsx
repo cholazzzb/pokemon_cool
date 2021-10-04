@@ -10,7 +10,7 @@ import PieChart from "./PieChart";
 import {
   OwnedPokemonContext,
   OwnedPokemonContextType,
-} from "context/OwnedPokemonContext";
+} from "@context/OwnedPokemonContext";
 
 const PieChartDataDummy = [
   {
@@ -43,7 +43,21 @@ const BodyStyle = css`
   height: 100%;
   flex-direction: column;
   margin: 0 0 65px 0;
-  overflow: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 `;
 
 const Ownedpage = () => {

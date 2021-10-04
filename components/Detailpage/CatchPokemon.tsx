@@ -19,7 +19,6 @@ const CatchPokemonStyle = css`
   display:flex;
   justify-content:center
   align-items:center;
-  color: black;
 `;
 
 const CatchAnimation = keyframes`
@@ -49,9 +48,6 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
   const { id, iconColor, pokemonName } = props;
   const [catchStatus, setCatchStatus] = useState<null | string>(null);
 
-  const onClose = () => {
-    setCatchStatus(null);
-  };
   const catchPokemon = () => {
     setCatchStatus("CATCHING");
   };

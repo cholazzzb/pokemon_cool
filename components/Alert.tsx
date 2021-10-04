@@ -20,6 +20,7 @@ const CloseIconStyle = css`
   display: flex;
   width: 25px;
   height: 25px;
+  color: black;
 `;
 
 const AlertBodyStyle = css`
@@ -42,6 +43,7 @@ const Alert: FC<IAlertProps> = (props) => {
   };
 
   const AlertStyle = css`
+    color: black;
     z-index: 50;
     display: flex;
     flex-direction: column;
@@ -60,7 +62,11 @@ const Alert: FC<IAlertProps> = (props) => {
     <div css={OverlayStyle}>
       <div css={AlertStyle}>
         <Header caption={headText}>
-          <span css={CloseIconStyle} onClick={onClose}>
+          <span
+            data-testid="alert-close-button"
+            css={CloseIconStyle}
+            onClick={onClose}
+          >
             <FontAwesomeIcon icon={faTimes} />
           </span>
         </Header>

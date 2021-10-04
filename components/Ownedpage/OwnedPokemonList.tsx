@@ -8,7 +8,7 @@ import Card from "@components/Card";
 import {
   OwnedPokemonContext,
   OwnedPokemonContextType,
-} from "context/OwnedPokemonContext";
+} from "@context/OwnedPokemonContext";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 
@@ -57,7 +57,7 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
   ) as OwnedPokemonContextType;
 
   return (
-    <div style={{ height: "100%", padding: "10px"}}>
+    <div style={{ height: "100%", padding:"10px"}}>
       <Card
         headText="Your Owned Pokemon"
         bodyText="Click to see details"

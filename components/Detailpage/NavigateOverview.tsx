@@ -17,17 +17,19 @@ const NavigateOverviewStyle = css`
 `;
 
 const IconStyle = css`
+  display:flex;
+  width: 25px;
+  height: 25px;
   padding: 20px;
 `;
 
 interface INavigateOverviewProps {
   currentId: number;
   setCurrentId: Dispatch<SetStateAction<number>>;
-  setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
 const NavigateOverview: FC<INavigateOverviewProps> = (props) => {
-  const { currentId, setCurrentId, setCurrentName } = props;
+  const { currentId, setCurrentId } = props;
   const prevPokemon = () => {
     setCurrentId(currentId - 1);
   };

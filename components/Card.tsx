@@ -5,7 +5,7 @@ import { FC } from "react";
 
 const CardStyle = css`
   text-transform: capitalize;
-  padding: 10px;
+  padding: 10px 0px;
 `;
 
 const CardHeaderStyle = css`

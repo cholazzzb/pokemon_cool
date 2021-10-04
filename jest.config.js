@@ -20,7 +20,9 @@ module.exports = {
 
     "^@components/(.*)$": "<rootDir>/components/$1",
     "^@constants/(.*)$": "<rootDir>/constants/$1",
-    "^@utils/(.*)$": "<rootDir>/utils/$1"
+    "^@utils/(.*)$": "<rootDir>/utils/$1",
+    "^@hooks/(.*)$": "<rootDir>/hooks/$1",
+    "^@context/(.*)$": "<rootDir>/context/$1"
   },
   testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   testEnvironment: "jsdom",

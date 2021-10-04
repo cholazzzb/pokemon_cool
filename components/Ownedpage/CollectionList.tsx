@@ -4,23 +4,27 @@
 import { css, jsx } from "@emotion/react";
 import { FC, useContext, useEffect, useState } from "react";
 import Card from "@components/Card";
+import Image from "next/image";
+
 import PokeImage from "@components/PokeImage";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   OwnedPokemonContext,
   OwnedPokemonContextType,
-} from "context/OwnedPokemonContext";
+} from "@context/OwnedPokemonContext";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 
 const ListItemStyle = css`
   display: flex;
-  margin: 20px 0px;
+  width: 100%;
   height: 30px;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  border-style: solid;
+  border-width: 2px 0px 2px 0px;
+  border-color: #f2f2f5;
 `;
 
 interface IRowProps {
@@ -39,14 +43,17 @@ const Row: FC<IRowProps> = (props) => {
   };
 
   const PokeImageStyle = css`
-    display: flex;
-    width: 20%;
+    position: relative;
+    width: 100px;
+    height: 100px;
   `;
   const MainStyle = css`
     width: 60%;
   `;
   const ReleaseStyle = css`
     display: flex;
+    align-items: center;
+    flex-direction: column;
     justify-content: center;
     width: 20%;
   `;
@@ -58,12 +65,18 @@ const Row: FC<IRowProps> = (props) => {
     border-radius: 10px;
     width: 20px;
     height: 20px;
+    margin-bottom: 10px;
   `;
 
   return (
     <div css={ListItemStyle} style={style}>
       <div css={PokeImageStyle}>
-        <PokeImage type={"grass"} id={id} size={0} />
+        <Image
+          data-testid="pokemon-image"
+          src={`/sprites/${id}.png`}
+          alt="pokemon"
+          layout="fill"
+        />{" "}
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>
@@ -75,6 +88,7 @@ const Row: FC<IRowProps> = (props) => {
         >
           <FontAwesomeIcon icon={faTrash} />
         </span>
+        Release
       </div>
     </div>
   );
@@ -112,37 +126,32 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
     <div
       css={css`
         height: 100%;
+        padding: 10px;
       `}
     >
       <Card
         headText={pokemonName}
         bodyText={pokemonAttributes.length + " pokemons"}
       />
-      <div
-        css={css`
-          height: 100%;
-          padding: 30px;
-        `}
-      >
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              height={height}
-              width={width}
-              itemCount={pokemonAttributes.length}
-              itemSize={100}
-              itemData={{
-                id: pokemonId,
-                attributes: pokemonAttributes,
-                setSelectedPokeName: setSelectedPokeName,
-                triggerRelease: triggerRelease,
-              }}
-            >
-              {Row}
-            </List>
-          )}
-        </AutoSizer>
-      </div>
+
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            height={height}
+            width={width}
+            itemCount={pokemonAttributes.length}
+            itemSize={100}
+            itemData={{
+              id: pokemonId,
+              attributes: pokemonAttributes,
+              setSelectedPokeName: setSelectedPokeName,
+              triggerRelease: triggerRelease,
+            }}
+          >
+            {Row}
+          </List>
+        )}
+      </AutoSizer>
     </div>
   );
 };

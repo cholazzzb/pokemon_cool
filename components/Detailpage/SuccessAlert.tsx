@@ -15,6 +15,8 @@ import {
 } from "react";
 import { OwnedPokemonContext, OwnedPokemonContextType } from "context/OwnedPokemonContext";
 
+import pokemonCaughtSound from "public/pokemonCaughtSound.mp3"
+
 const FormStyle = css`
   display: flex;
   flex-direction: column;
@@ -34,6 +36,13 @@ interface ISuccessAlertProps {
 }
 
 const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
+
+useEffect(() => {
+  console.log("AUDIO PLAY")
+  const audio = new Audio(pokemonCaughtSound)
+  audio.play()
+}, [])
+
   const { id, pokemonName, color, setCatchStatus } = props;
 
   const onClose = () => {
@@ -64,7 +73,7 @@ const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
     if (onSaving) {
       submitForm();
     }
-  });
+  }, [onSaving]);
 
   const ButtonStyle = css`
     background-color: ${color};

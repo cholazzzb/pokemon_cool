@@ -4,7 +4,6 @@ import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction } from "react";
 import PokemonCardHor from "@components/PokemonCardHor";
 import { DETAILPAGE } from "@constants/route";
-import useQueryPokemons from "hooks/API/useQueryPokemons";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
@@ -41,57 +40,50 @@ interface IRowProps {
 
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-  const { pokemons, setCurrentPage, setCurrentId, setCurrentName } = data;
+  const { pokemons, setCurrentPage, setCurrentId } = data;
 
   const handleClick = () => {
     setCurrentPage(DETAILPAGE);
-    setCurrentId(pokemons.results[index].id);
-    setCurrentName(pokemons.results[index].name);
+    setCurrentId(pokemons[index].id);
   };
 
   return (
     <div onClick={handleClick} css={ListItemStyle} style={style}>
-      {pokemons.results[index] && (
-        <PokemonCardHor id={pokemons.results[index].id} name={pokemons.results[index].name} />
+      {pokemons[index] && (
+        <PokemonCardHor id={pokemons[index].id} name={pokemons[index].name} />
       )}
     </div>
   );
 };
 
 interface IPokemonList {
+  pokemons: any[];
   setCurrentPage: Dispatch<SetStateAction<string>>;
   setCurrentId: Dispatch<SetStateAction<number>>;
-  setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
 const PokemonList: FC<IPokemonList> = (props) => {
-  const { setCurrentPage, setCurrentId, setCurrentName } = props;
-
-  const { loading, error, data } = useQueryPokemons();
-
-  if (loading) return <div>Loading</div>;
-  if (error) return <div>Error</div>;
+  const { pokemons, setCurrentPage, setCurrentId } = props;
 
   return (
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            css={ListStyle}
-            height={height}
-            width={width}
-            itemCount={data.pokemons.count}
-            itemSize={200}
-            itemData={{
-              pokemons: data.pokemons,
-              setCurrentPage: setCurrentPage,
-              setCurrentId: setCurrentId,
-              setCurrentName: setCurrentName,
-            }}
-          >
-            {Row}
-          </List>
-        )}
-      </AutoSizer>
+    <AutoSizer>
+      {({ height, width }) => (
+        <List
+          css={ListStyle}
+          height={height}
+          width={width}
+          itemCount={pokemons.length}
+          itemSize={200}
+          itemData={{
+            pokemons: pokemons,
+            setCurrentPage: setCurrentPage,
+            setCurrentId: setCurrentId,
+          }}
+        >
+          {Row}
+        </List>
+      )}
+    </AutoSizer>
   );
 };
 

@@ -6,7 +6,7 @@ import TabMoves from "./TabMoves";
 
 interface ITabProps {
   currentTab: number;
-  id: number;
+  currentId: number;
   name: string;
   height: string;
   weight: string;
@@ -16,13 +16,21 @@ interface ITabProps {
 }
 
 const Tab: FC<ITabProps> = (props) => {
-  const { currentTab, id, name, height, weight, abilities, stats, moves } =
-    props;
+  const {
+    currentTab,
+    currentId,
+    name,
+    height,
+    weight,
+    abilities,
+    stats,
+    moves,
+  } = props;
+
   switch (currentTab) {
     case 0:
       return (
         <TabAbout
-          name={name}
           height={height}
           weight={weight}
           abilities={abilities}
@@ -31,7 +39,7 @@ const Tab: FC<ITabProps> = (props) => {
     case 1:
       return <TabBaseStats stats={stats} />;
     case 2:
-      return <TabEvolution id={id} name={name} />;
+      return <TabEvolution currentId={currentId} name={name} />;
     case 3:
       return <TabMoves moves={moves} />;
     default:

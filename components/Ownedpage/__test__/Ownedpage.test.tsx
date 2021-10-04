@@ -11,27 +11,14 @@ describe("Ownedpage", () => {
   beforeEach(() => {
     window.sessionStorage.clear();
     let myPokemon = new OwnedPokemon([
-      {
-        name: "bulbasaur",
-        imgURL: "",
-        attributes: [{ name: "BOBI" }],
-      },
+      { id: 1, name: "bulbasaur", attributes: [{ name: "BOBI" }] },
     ]);
     saveNewPokemon(window, myPokemon);
   });
   it("renders correctly", () => {
-    render(
-      <Ownedpage
-        name={""}
-        imgURL="2"
-        setCurrentPage={mockSetCurrentPage}
-        setCurrentName={mockSetCurrentName}
-      />
-    );
+    render(<Ownedpage />);
 
-    const headerText = screen.getByText(/owned pokemon/i);
-    const bulbasaurText = screen.getByText(/bulbasaur/i);
+    const headerText = screen.getByText(/you don't have any pokemon yet/i);
     expect(headerText).toBeInTheDocument();
-    expect(bulbasaurText).toBeInTheDocument();
   });
 });

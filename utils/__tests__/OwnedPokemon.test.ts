@@ -4,8 +4,8 @@ describe("Test constuctor", () => {
   test("", () => {
     let myPokemon = new OwnedPokemon([
       {
+        id: 1,
         name: "bulbasaur",
-        imgURL: "",
         attributes: [{ name: "BOBI" }],
       },
     ]);
@@ -26,8 +26,8 @@ describe("Test OwnedPokemon methods", () => {
     beforeEach(() => {
       myPokemon = new OwnedPokemon([
         {
+          id: 1,
           name: "bulbasaur",
-          imgURL: "",
           attributes: [{ name: "BOBI" }],
         },
       ]);
@@ -52,8 +52,8 @@ describe("Test OwnedPokemon methods", () => {
     beforeEach(() => {
       myPokemon = new OwnedPokemon([
         {
+          id: 1,
           name: "bulbasaur",
-          imgURL: "",
           attributes: [{ name: "BOBI" }],
         },
       ]);
@@ -63,14 +63,14 @@ describe("Test OwnedPokemon methods", () => {
       expect(myPokemon.checkIfPokemonAlreadyExist("bulbasaur")).toBeTruthy();
     });
     test("should return false (no pokemon)", () => {
-      expect(myPokemon.checkIfPokemonAlreadyExist("chimcar")).toBeFalsy();
+      expect(myPokemon.checkIfPokemonAlreadyExist("charmander")).toBeFalsy();
     });
   });
 
   describe("addPokemon()", () => {
     test("should add new pokemon (first time)", () => {
       let myPokemon = new OwnedPokemon(null);
-      const isSuccess = myPokemon.addPokemon("bulbasaur", "BOBI", "0");
+      const isSuccess = myPokemon.addPokemon(1, "bulbasaur", "BOBI");
       expect(myPokemon.checkIfNameAlreadyExist("BOBI")).toBeTruthy();
       expect(myPokemon.checkIfPokemonAlreadyExist("bulbasaur")).toBeTruthy();
       expect(isSuccess).toBeTruthy();
@@ -80,31 +80,31 @@ describe("Test OwnedPokemon methods", () => {
     beforeEach(() => {
       myPokemon = new OwnedPokemon([
         {
+          id: 1,
           name: "bulbasaur",
-          imgURL: "",
           attributes: [{ name: "BOBI" }],
         },
       ]);
     });
     test("should add new pokemon (different pokemon)", () => {
-      const isSuccess = myPokemon.addPokemon("chimcar", "MONYET", "2.png");
+      const isSuccess = myPokemon.addPokemon(4, "charmander", "MONYET");
       expect(myPokemon.checkIfNameAlreadyExist("MONYET")).toBeTruthy();
-      expect(myPokemon.checkIfPokemonAlreadyExist("chimcar")).toBeTruthy();
+      expect(myPokemon.checkIfPokemonAlreadyExist("charmander")).toBeTruthy();
       expect(isSuccess).toBeTruthy();
     });
     test("should add new pokemon (same pokemon, different name)", () => {
-      myPokemon.addPokemon("chimcar", "MONYET", "2.png");
+      myPokemon.addPokemon(4, "charmander", "MONYET");
 
-      const isSuccess = myPokemon.addPokemon("chimcar", "MONYET LAGI", "2.png");
+      const isSuccess = myPokemon.addPokemon(4, "charmander", "MONYET LAGI");
       expect(myPokemon.checkIfNameAlreadyExist("MONYET LAGI")).toBeTruthy();
-      expect(myPokemon.checkIfPokemonAlreadyExist("chimcar")).toBeTruthy();
+      expect(myPokemon.checkIfPokemonAlreadyExist("charmander")).toBeTruthy();
       expect(isSuccess).toBeTruthy();
     });
     test("should not add new pokemon (name already exist)", () => {
-      myPokemon.addPokemon("chimcar", "MONYET", "2.png");
-      myPokemon.addPokemon("chimcar", "MONYET LAGI", "2.png");
+      myPokemon.addPokemon(4, "charmander", "MONYET");
+      myPokemon.addPokemon(4, "charmander", "MONYET LAGI");
 
-      const isSuccess = myPokemon.addPokemon("chimcar", "MONYET LAGI", "2.png");
+      const isSuccess = myPokemon.addPokemon(4, "charmander", "MONYET LAGI");
       expect(isSuccess).toBeFalsy();
     });
   });
@@ -113,8 +113,8 @@ describe("Test OwnedPokemon methods", () => {
     test("pokemon data reduced (without any same pokemon left)", () => {
       let myPokemon = new OwnedPokemon([
         {
+          id: 1,
           name: "bulbasaur",
-          imgURL: "",
           attributes: [{ name: "BOBI" }],
         },
       ]);
@@ -125,13 +125,13 @@ describe("Test OwnedPokemon methods", () => {
     test("pokemon data reduced (without any same pokemon left)", () => {
       let myPokemon = new OwnedPokemon([
         {
+          id: 1,
           name: "bulbasaur",
-          imgURL: "",
           attributes: [{ name: "BOBI" }, { name: "BOBA" }],
         },
         {
-          name: "chimcar",
-          imgURL: "",
+          id: 4,
+          name: "charmander",
           attributes: [{ name: "MONYET" }],
         },
       ]);
@@ -142,8 +142,8 @@ describe("Test OwnedPokemon methods", () => {
     test("pokemon data reduced (left the same pokemon)", () => {
       let myPokemon = new OwnedPokemon([
         {
+          id: 1,
           name: "bulbasaur",
-          imgURL: "",
           attributes: [{ name: "BOBI" }, { name: "BOBA" }],
         },
       ]);
@@ -155,8 +155,8 @@ describe("Test OwnedPokemon methods", () => {
     test("nothing happen (pokemon name doesn't exist)", () => {});
     let myPokemon = new OwnedPokemon([
       {
+        id: 1,
         name: "bulbasaur",
-        imgURL: "",
         attributes: [{ name: "BOBI" }],
       },
     ]);

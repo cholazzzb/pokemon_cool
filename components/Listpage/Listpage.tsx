@@ -13,21 +13,21 @@ const ListPageStyle = css`
 `;
 
 interface IListPage {
+  pokemons: any[];
   setCurrentPage: Dispatch<SetStateAction<string>>;
   setCurrentId: Dispatch<SetStateAction<number>>;
-  setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
 const Listpage: FC<IListPage> = (props) => {
-  const { setCurrentPage, setCurrentId, setCurrentName } = props;
+  const { pokemons, setCurrentPage, setCurrentId } = props;
 
   return (
     <div css={ListPageStyle}>
       <Header caption="Pokemon List" />
       <PokemonList
+        pokemons={pokemons}
         setCurrentPage={setCurrentPage}
         setCurrentId={setCurrentId}
-        setCurrentName={setCurrentName}
       />
     </div>
   );

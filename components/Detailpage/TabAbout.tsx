@@ -24,21 +24,16 @@ const DataStyle = css`
 `;
 
 interface TabAboutProps {
-  name: string;
   height: string;
   weight: string;
   abilities: any
 }
 
 const TabAbout: FC<TabAboutProps> = (props) => {
-  const { name, height, weight, abilities } = props;
+  const {  height, weight, abilities } = props;
  
   return (
     <div css={TabBodyStyle}>
-      <div css={TextContainerStyle}>
-        <p css={LabelStyle}>Species</p>
-        <p css={DataStyle}>{name}</p>
-      </div>
       <div css={TextContainerStyle}>
         <p css={LabelStyle}>Height</p>
         {height}

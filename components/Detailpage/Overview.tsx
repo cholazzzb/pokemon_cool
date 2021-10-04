@@ -9,14 +9,6 @@ import NavigateOverview from "./NavigateOverview";
 import CatchPokemon from "./CatchPokemon";
 import { getSecondaryColorFromType } from "@utils/colorTheme";
 
-interface OverviewProps {
-  id: number;
-  setCurrentId: Dispatch<SetStateAction<number>>
-  name: string;
-  setCurrentName: Dispatch<SetStateAction<string>>
-  types: any;
-}
-
 const InformationStyle = css`
   display: flex;
   width: 100%;
@@ -44,8 +36,15 @@ const OverviewStyle = css`
   color: white;
 `;
 
+interface OverviewProps {
+  id: number;
+  setCurrentId: Dispatch<SetStateAction<number>>;
+  currentName: string;
+  types: any;
+}
+
 const Overview: FC<OverviewProps> = (props) => {
-  const { id, setCurrentId, name, setCurrentName, types } = props;
+  const { id, setCurrentId, currentName, types } = props;
   const seconColor = getSecondaryColorFromType(types[0].type.name);
 
   return (
@@ -57,7 +56,7 @@ const Overview: FC<OverviewProps> = (props) => {
       >
         <div css={InformationStyle}>
           <div>
-            <p css={NameStyle}>{name}</p>
+            <p css={NameStyle}>{currentName}</p>
             <div css={TypesStyle}>
               {types.map((type: any) => (
                 <TypeChip key={type.type.name} type={type.type.name} />
@@ -67,16 +66,11 @@ const Overview: FC<OverviewProps> = (props) => {
           <p>#{id}</p>
         </div>
         <div css={ImageStyle}>
-          <PokeImage
-            type={types[0].type.name}
-            id={id}
-            size={200}
-          />
+          <PokeImage type={types[0].type.name} id={id} size={200} />
         </div>
       </div>
-      <NavigateOverview currentId={id} setCurrentId={setCurrentId} setCurrentName={setCurrentName}/>
-      <CatchPokemon id={id} iconColor={seconColor} pokemonName={name} />
-
+      <NavigateOverview currentId={id} setCurrentId={setCurrentId} />
+      <CatchPokemon id={id} iconColor={seconColor} pokemonName={currentName} />
     </div>
   );
 };

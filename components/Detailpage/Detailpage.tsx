@@ -9,29 +9,25 @@ import Tab from "./Tab";
 import TabContainer from "./TabContainer";
 import Overview from "./Overview";
 
-import {
-  getPrimaryColorFromType,
-  getSecondaryColorFromType,
-} from "@utils/colorTheme";
+import { getPrimaryColorFromType } from "@utils/colorTheme";
 
 import useQueryPokeDetail from "hooks/API/useQueryPokeDetail";
 
 interface DetailPageProps {
   id: number;
+  currentName: string;
   setCurrentId: Dispatch<SetStateAction<number>>;
-  name: string;
-  setCurrentName: Dispatch<SetStateAction<string>>;
   setCurrentPage: Dispatch<SetStateAction<string>>;
 }
 
 const Detailpage: FC<DetailPageProps> = (props) => {
-  const { id, setCurrentId, name, setCurrentName, setCurrentPage } = props;
+  const { id, setCurrentId, currentName, setCurrentPage } = props;
   const onBack = () => {
     setCurrentPage("LISTPAGE");
   };
 
   const [currentTab, setCurrentTab] = useState(0);
-  const { loading, error, data } = useQueryPokeDetail(name);
+  const { loading, error, data } = useQueryPokeDetail(currentName);
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
@@ -53,8 +49,7 @@ const Detailpage: FC<DetailPageProps> = (props) => {
       <Overview
         id={id}
         setCurrentId={setCurrentId}
-        name={name}
-        setCurrentName={setCurrentName}
+        currentName={currentName}
         types={types}
       />
       <TabContainer

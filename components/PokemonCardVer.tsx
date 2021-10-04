@@ -5,7 +5,7 @@ import { FC } from "react";
 import TypeChip from "./TypeChip";
 import PokeImage from "./PokeImage";
 import { getPrimaryColorFromType } from "@utils/colorTheme";
-import useQueryPokeType from "hooks/API/useQueryPokeType";
+import useQueryPokeType from "@hooks/API/useQueryPokeType";
 
 const NameStyle = css`
   font-size: 15px;
