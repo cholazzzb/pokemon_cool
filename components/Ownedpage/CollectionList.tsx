@@ -6,9 +6,8 @@ import PokeImage from "@components/PokeImage";
 import { css, jsx } from "@emotion/react";
 import { faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import OwnedPokemon from "@utils/OwnedPokemon";
-import { getOwnedPokemonData, saveNewPokemon } from "@utils/session";
-import { FC, useEffect, useState } from "react";
+import { OwnedPokemonContext, OwnedPokemonContextType } from "context/OwnedPokemonContext";
+import { FC, useContext, useEffect, useState } from "react";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
@@ -42,7 +41,6 @@ const Row: FC<IRowProps> = (props) => {
   const execute = (pokeName: string) => {
     setSelectedPokeName(pokeName);
     triggerRelease();
-    loadOwnedPokemon();
   };
 
   const PokeImageStyle = css`
@@ -95,11 +93,10 @@ interface ICollectionListStyle {
   pokemonName: string;
   imgURL: string;
   attributes: string[];
-  loadOwnedPokemon: () => void;
 }
 
 const CollectionList: FC<ICollectionListStyle> = (props) => {
-  const { id, pokemonName, imgURL, attributes, loadOwnedPokemon } = props;
+  const { id, pokemonName, imgURL, attributes } = props;
   const [windowDimension, setWindowDimension] = useState({
     width: 1000,
     height: 666,
@@ -118,13 +115,9 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
     setReleasing(!releasing);
   };
 
-  const releasePokemon = (name: string) => {
-    const sessStorage = getOwnedPokemonData(window);
-    let ownedPokemon = new OwnedPokemon(sessStorage);
-    ownedPokemon.releasePokemon(name);
-    saveNewPokemon(window, ownedPokemon.data);
-    loadOwnedPokemon();
-  };
+  const { ownedPokemon, savePokemon, releasePokemon } = useContext(
+    OwnedPokemonContext
+  ) as OwnedPokemonContextType;
 
   useEffect(() => {
     console.log("releasing... Pokemon Name:", selectedPokeName);
@@ -134,28 +127,38 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
   }, [releasing]);
 
   return (
-    <div>
+    <div
+      css={css`
+        height: 100%;
+      `}
+    >
+      {" "}
       <Card headText={pokemonName} bodyText={attributes.length + " pokemons"} />
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            height={height}
-            width={width}
-            itemCount={attributes.length}
-            itemSize={60}
-            itemData={{
-              imgURL: imgURL,
-              id: id,
-              attributes: attributes,
-              loadOwnedPokemon: loadOwnedPokemon,
-              setSelectedPokeName: setSelectedPokeName,
-              triggerRelease: triggerRelease,
-            }}
-          >
-            {Row}
-          </List>
-        )}
-      </AutoSizer>
+      <div
+        css={css`
+          height: 100%;
+        `}
+      >
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              width={width}
+              itemCount={attributes.length}
+              itemSize={60}
+              itemData={{
+                imgURL: imgURL,
+                id: id,
+                attributes: attributes,
+                setSelectedPokeName: setSelectedPokeName,
+                triggerRelease: triggerRelease,
+              }}
+            >
+              {Row}
+            </List>
+          )}
+        </AutoSizer>
+      </div>
     </div>
   );
 };

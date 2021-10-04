@@ -13,7 +13,9 @@ import Detailpage from "@components/Detailpage/Detailpage";
 import Ownedpage from "@components/Ownedpage/Ownedpage";
 import Navigator from "@components/Navigator";
 import { DETAILPAGE, LISTPAGE, OWNEDPAGE } from "@constants/route";
-import useQueryPokemons from "hooks/useQueryPokemons";
+import useQueryPokemons from "hooks/API/useQueryPokemons";
+import useLoadOwnedPoke from "hooks/useLoadOwnedPoke";
+import { OwnedPokemonContext } from "context/OwnedPokemonContext";
 
 const color = "white";
 
@@ -74,7 +76,9 @@ const Content: FC<IContentProps> = (props) => {
       return (
         <Detailpage
           id={currentId}
+          setCurrentId={setCurrentId}
           name={currentName}
+          setCurrentName={setCurrentName}
           imgURL={pokemons.results[currentId - 1].artwork}
           setCurrentPage={setCurrentPage}
         />
@@ -90,32 +94,39 @@ const Home: NextPage = () => {
   const [currentId, setCurrentId] = useState<number>(1);
   const [currentName, setCurrentName] = useState<string>("");
 
+  const OwnedPokemonContextValue = useLoadOwnedPoke();
+
   const { loading, error, data } = useQueryPokemons();
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
 
   return (
-    <div>
-      <Head>
-        <title>Pokemon Cool</title>
-        <meta name="description" content="" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <OwnedPokemonContext.Provider value={OwnedPokemonContextValue}>
+      <div>
+        <Head>
+          <title>Pokemon Cool</title>
+          <meta name="description" content="" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <Layout>
-        <Content
-          pokemons={data.pokemons}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          currentId={currentId}
-          setCurrentId={setCurrentId}
-          currentName={currentName}
-          setCurrentName={setCurrentName}
-        />
-        <Navigator currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      </Layout>
-    </div>
+        <Layout>
+          <Content
+            pokemons={data.pokemons}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            currentId={currentId}
+            setCurrentId={setCurrentId}
+            currentName={currentName}
+            setCurrentName={setCurrentName}
+          />
+          <Navigator
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </Layout>
+      </div>
+    </OwnedPokemonContext.Provider>
   );
 };
 

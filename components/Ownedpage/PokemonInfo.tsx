@@ -25,11 +25,10 @@ const PokemonInfoStyle = css`
 
 interface IPokemonInfoProps {
   data: any;
-  loadOwnedPokemon: () => void
 }
 
 const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
-  const {data , loadOwnedPokemon} = props;
+  const {data} = props;
   const [open, setOpen] = useState(false);
 
   const onOpen = () => {
@@ -48,7 +47,6 @@ const PokemonInfo: FC<IPokemonInfoProps> = (props) => {
       let ownedPokemon = new OwnedPokemon(sessStorage);
       ownedPokemon.releasePokemon(data.name);
       saveNewPokemon(window, ownedPokemon.data);
-      loadOwnedPokemon()
     }
   };
 

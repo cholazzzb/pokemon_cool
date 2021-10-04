@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import useFetchPokeImage from "hooks/useFetchPokeImage";
 import Image from "next/image";
 import { FC } from "react";
 import { getSecondaryColorFromType } from "./util";

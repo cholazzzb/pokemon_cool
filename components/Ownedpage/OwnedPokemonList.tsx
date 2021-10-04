@@ -2,14 +2,7 @@
 /** @jsx jsx */
 import Card from "@components/Card";
 import { css, jsx } from "@emotion/react";
-import {
-  Dispatch,
-  FC,
-  Fragment,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 import PokemonInfo from "./PokemonInfo";
@@ -21,16 +14,15 @@ interface IRowProps {
 }
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-  const { ownedPokemon, loadOwnedPokemon, setCurrPokemonIdx } = data;
+  const { ownedPokemon, setActivePokeIdx } = data;
   return (
-    <div onClick={() => setCurrPokemonIdx(index)} style={style}>
+    <div onClick={() => setActivePokeIdx(index)} style={style}>
       <PokemonInfo
         data={{
           id: ownedPokemon[index].id,
           name: ownedPokemon[index].name,
           artwork: ownedPokemon[index].imgURL,
         }}
-        loadOwnedPokemon={loadOwnedPokemon}
       />
     </div>
   );
@@ -56,35 +48,17 @@ const ListStyle = css`
 interface IOwnedPokemonListProps {
   ownedPokemon: any;
   totalOwnedPokemon: number;
-  loadOwnedPokemon: () => void;
-  setCurrPokemonIdx: Dispatch<SetStateAction<number | null>>;
+  setActivePokeIdx: Dispatch<SetStateAction<number | null>>;
 }
 const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
-  const {
-    ownedPokemon,
-    totalOwnedPokemon,
-    loadOwnedPokemon,
-    setCurrPokemonIdx,
-  } = props;
-  const [windowDimension, setWindowDimension] = useState({
-    width: 1000,
-    height: 666,
-  });
-
-  useEffect(() => {
-    const { innerWidth: width, innerHeight: height } = window;
-    console.log(width, height);
-    setWindowDimension({ width, height });
-  }, []);
+  const { ownedPokemon, totalOwnedPokemon, setActivePokeIdx } = props;
 
   return (
-    <Fragment>
-      <div>
+    <div style={{ height: "100%" }}>
       <Card
         headText="Total Owned Pokemon"
         bodyText={totalOwnedPokemon.toString()}
-        />
-        </div>
+      />
       <div style={{ height: "100%" }}>
         <AutoSizer>
           {({ height, width }) => (
@@ -97,8 +71,7 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
               layout="horizontal"
               itemData={{
                 ownedPokemon: ownedPokemon,
-                loadOwnedPokemon: loadOwnedPokemon,
-                setCurrPokemonIdx: setCurrPokemonIdx,
+                setActivePokeIdx: setActivePokeIdx,
               }}
             >
               {Row}
@@ -106,7 +79,7 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
           )}
         </AutoSizer>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

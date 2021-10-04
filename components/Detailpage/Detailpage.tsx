@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 
 import {
   getPrimaryColorFromType,
@@ -15,17 +15,19 @@ import TabContainer from "./TabContainer";
 import Overview from "./Overview";
 import CatchPokemon from "./CatchPokemon";
 
-import useQueryPokeDetail from "hooks/useQueryPokeDetail";
+import useQueryPokeDetail from "hooks/API/useQueryPokeDetail";
 
 interface DetailPageProps {
   id: number;
+  setCurrentId: Dispatch<SetStateAction<number>>;
   name: string;
+  setCurrentName: Dispatch<SetStateAction<string>>;
   imgURL: string;
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPage: Dispatch<SetStateAction<string>>;
 }
 
 const Detailpage: FC<DetailPageProps> = (props) => {
-  const { id, name, imgURL, setCurrentPage } = props;
+  const { id,setCurrentId, name, setCurrentName, imgURL, setCurrentPage } = props;
   const onBack = () => {
     setCurrentPage("LISTPAGE");
   };
@@ -45,12 +47,13 @@ const Detailpage: FC<DetailPageProps> = (props) => {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
   `;
 
   return (
     <div css={DetailpageStyle}>
       <Header caption="" onBack={onBack} />
-      <Overview id={id} name={name} imgURL={imgURL} types={types} />
+      <Overview id={id} setCurrentId={setCurrentId} name={name} setCurrentName={setCurrentName} imgURL={imgURL} types={types} />
       <TabContainer
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}

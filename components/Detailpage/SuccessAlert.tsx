@@ -3,17 +3,17 @@
 import { css, jsx } from "@emotion/react";
 
 import Alert from "@components/Alert";
-import OwnedPokemon from "@utils/OwnedPokemon";
-import { getOwnedPokemonData, saveNewPokemon } from "@utils/session";
 import {
   ChangeEvent,
   Dispatch,
   FC,
   SetStateAction,
   SyntheticEvent,
+  useContext,
   useEffect,
   useState,
 } from "react";
+import { OwnedPokemonContext, OwnedPokemonContextType } from "context/OwnedPokemonContext";
 
 const FormStyle = css`
   display: flex;
@@ -51,11 +51,13 @@ const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
     e.preventDefault();
     setOnSaving(true);
   };
+
+  const { ownedPokemon, savePokemon, releasePokemon } = useContext(
+    OwnedPokemonContext
+  ) as OwnedPokemonContextType;
+
   const submitForm = () => {
-    const sessStorage = getOwnedPokemonData(window);
-    let ownedPokemon = new OwnedPokemon(sessStorage);
-    ownedPokemon.addPokemon(id, pokemonName, name, imgURL);
-    saveNewPokemon(window, ownedPokemon.data);
+    savePokemon(id, pokemonName, name, imgURL)
     onClose();
   };
 

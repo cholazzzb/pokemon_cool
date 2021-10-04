@@ -3,11 +3,17 @@
 import { css, jsx } from "@emotion/react";
 
 import Image from "next/image";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useContext } from "react";
 import { LISTPAGE, OWNEDPAGE } from "@constants/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import Search from "./Search";
+import Badge from "./Badge";
+import {
+  OwnedPokemonContext,
+  OwnedPokemonContextType,
+} from "context/OwnedPokemonContext";
+import { getTotalPokemon } from "@utils/session";
 
 const NavigatorContainerStyle = css`
   z-index: 0;
@@ -36,6 +42,10 @@ interface INavigatorProps {
 
 const Navigator: FC<INavigatorProps> = (props) => {
   const { currentPage, setCurrentPage } = props;
+
+  const { ownedPokemon, savePokemon, releasePokemon } = useContext(
+    OwnedPokemonContext
+  ) as OwnedPokemonContextType;
 
   const ButtonContainerStyle = (page: string) => {
     let color;
@@ -88,6 +98,7 @@ const Navigator: FC<INavigatorProps> = (props) => {
           />
         </span>
         Owned
+        <Badge totalOwnedPokemon={getTotalPokemon(ownedPokemon)} />
       </div>
     </div>
   );

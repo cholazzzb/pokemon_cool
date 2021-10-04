@@ -2,13 +2,16 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import PokeImage from "@components/PokeImage";
 import TypeChip from "@components/TypeChip";
+import NavigateOverview from "./NavigateOverview";
 
 interface OverviewProps {
   id: number;
+  setCurrentId: Dispatch<SetStateAction<number>>
   name: string;
+  setCurrentName: Dispatch<SetStateAction<string>>
   imgURL: string;
   types: any;
 }
@@ -38,33 +41,39 @@ const ImageStyle = css`
 `;
 const OverviewStyle = css`
   color: white;
-  padding: 0px 20px 10px 20px;
 `;
 
 const Overview: FC<OverviewProps> = (props) => {
-  const { id, name, imgURL, types } = props;
+  const { id, setCurrentId, name, setCurrentName, imgURL, types } = props;
 
   return (
     <div css={OverviewStyle}>
-      <div css={InformationStyle}>
-        <div>
-          <p css={NameStyle}>{name}</p>
-          <div css={TypesStyle}>
-            {types.map((type: any) => (
-              <TypeChip key={type.type.name} type={type.type.name} />
-            ))}
+      <div
+        css={css`
+          padding: 0px 20px 10px 20px;
+        `}
+      >
+        <div css={InformationStyle}>
+          <div>
+            <p css={NameStyle}>{name}</p>
+            <div css={TypesStyle}>
+              {types.map((type: any) => (
+                <TypeChip key={type.type.name} type={type.type.name} />
+              ))}
+            </div>
           </div>
+          <p>#{id}</p>
         </div>
-        <p>#{id}</p>
+        <div css={ImageStyle}>
+          <PokeImage
+            type={types[0].type.name}
+            id={id.toString()}
+            imgURL={imgURL}
+            size={200}
+          />
+        </div>
       </div>
-      <div css={ImageStyle}>
-        <PokeImage
-          type={types[0].type.name}
-          id={id.toString()}
-          imgURL={imgURL}
-          size={200}
-        />
-      </div>
+      <NavigateOverview currentId={id} setCurrentId={setCurrentId} setCurrentName={setCurrentName}/>
     </div>
   );
 };

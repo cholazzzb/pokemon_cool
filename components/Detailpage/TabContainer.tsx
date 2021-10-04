@@ -4,6 +4,7 @@ import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction } from "react";
 
 const TabContainerStyle = css`
+  height: 100%;
   width: 100%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -19,8 +20,8 @@ const TabHeaderStyle = css`
 `;
 
 const TabStyle = css`
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   width: 25%;
   font-size: 12px;
   padding: 10px;
@@ -50,7 +51,9 @@ const TabContainer: FC<TabContainerProps> = (props) => {
       <div css={TabHeaderStyle}>
         {tabs.map((tab, idx) => (
           <div
-            css={idx === props.currentTab ? [ActiveTabStyle, TabStyle] : TabStyle}
+            css={
+              idx === props.currentTab ? [ActiveTabStyle, TabStyle] : TabStyle
+            }
             key={tab}
             onClick={() => props.setCurrentTab(idx)}
           >
