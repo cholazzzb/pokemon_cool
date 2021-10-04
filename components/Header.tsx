@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { FC } from "react";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC } from "react";
 
 const HeaderStyle = css`
   color: black;
@@ -27,7 +27,7 @@ const IconStyle = css`
 
 const CaptionStyle = css`
   display: flex;
-  justify-content:center;
+  justify-content: center;
   color: black;
   font-size: 25px;
   font-weight: 700;
@@ -43,30 +43,27 @@ const ChildrenStyle = css`
 `;
 
 interface IHeaderProps {
-  caption: string;
+  caption?: string;
   children?: any;
   onBack?: () => void;
 }
 
 const Header: FC<IHeaderProps> = (props) => {
+  const { caption, children, onBack } = props;
   return (
     <div css={HeaderStyle}>
       <div css={BackStyle}>
-        {props.onBack && (
-          <span
-            data-testid="header-backicon"
-            css={IconStyle}
-            onClick={props.onBack}
-          >
+        {onBack && (
+          <span data-testid="header-backicon" css={IconStyle} onClick={onBack}>
             <FontAwesomeIcon icon={faChevronLeft} />
           </span>
         )}
       </div>
       <div data-testid="header-label" css={CaptionStyle}>
-        {props.caption}
+        {caption}
       </div>
       <div data-testid="header-children-label" css={ChildrenStyle}>
-        {props.children}
+        {children}
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ export type OwnedPokemonContextType = {
     id: number,
     pokemonName: string,
     name: string,
-    imgURL: string
   ) => void;
   releasePokemon: (name: string) => void;
 };

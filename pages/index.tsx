@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { jsx } from "@emotion/react";
 
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -13,20 +13,10 @@ import Detailpage from "@components/Detailpage/Detailpage";
 import Ownedpage from "@components/Ownedpage/Ownedpage";
 import Navigator from "@components/Navigator";
 import { DETAILPAGE, LISTPAGE, OWNEDPAGE } from "@constants/route";
-import useQueryPokemons from "hooks/API/useQueryPokemons";
 import useLoadOwnedPoke from "hooks/useLoadOwnedPoke";
 import { OwnedPokemonContext } from "context/OwnedPokemonContext";
 
-const color = "white";
-
-const example = css`
-  &:hover {
-    color: ${color};
-  }
-`;
-
 interface IContentProps {
-  pokemons: any;
   currentPage: string;
   setCurrentPage: Dispatch<SetStateAction<string>>;
   currentId: number;
@@ -37,7 +27,6 @@ interface IContentProps {
 
 const Content: FC<IContentProps> = (props) => {
   const {
-    pokemons,
     currentPage,
     setCurrentPage,
     currentId,
@@ -50,26 +39,10 @@ const Content: FC<IContentProps> = (props) => {
     case LISTPAGE:
       return (
         <Listpage
-          pokemons={pokemons}
           setCurrentPage={setCurrentPage}
           setCurrentId={setCurrentId}
           setCurrentName={setCurrentName}
         />
-      );
-
-    case OWNEDPAGE:
-      return (
-        <div
-          css={css`
-            margin: 0 0 65px 0;
-            height: 100%;
-          `}
-        >
-          <Ownedpage
-            name={currentName}
-            imgURL={pokemons.results[currentId - 1].artwork}
-          />
-        </div>
       );
 
     case DETAILPAGE:
@@ -79,10 +52,12 @@ const Content: FC<IContentProps> = (props) => {
           setCurrentId={setCurrentId}
           name={currentName}
           setCurrentName={setCurrentName}
-          imgURL={pokemons.results[currentId - 1].artwork}
           setCurrentPage={setCurrentPage}
         />
       );
+
+    case OWNEDPAGE:
+      return <Ownedpage />;
 
     default:
       return <div>ERROR</div>;
@@ -96,14 +71,8 @@ const Home: NextPage = () => {
 
   const OwnedPokemonContextValue = useLoadOwnedPoke();
 
-  const { loading, error, data } = useQueryPokemons();
-
-  if (loading) return <div>Loading</div>;
-  if (error) return <div>Error</div>;
-
   return (
     <OwnedPokemonContext.Provider value={OwnedPokemonContextValue}>
-      <div>
         <Head>
           <title>Pokemon Cool</title>
           <meta name="description" content="" />
@@ -112,7 +81,6 @@ const Home: NextPage = () => {
 
         <Layout>
           <Content
-            pokemons={data.pokemons}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             currentId={currentId}
@@ -125,7 +93,6 @@ const Home: NextPage = () => {
             setCurrentPage={setCurrentPage}
           />
         </Layout>
-      </div>
     </OwnedPokemonContext.Provider>
   );
 };

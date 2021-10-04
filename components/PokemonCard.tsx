@@ -7,7 +7,7 @@ import { useQuery, gql } from "@apollo/client";
 
 import PokeImage from "./PokeImage";
 import TypeChip from "./TypeChip";
-import { getPrimaryColorFromType } from "./util";
+import { getPrimaryColorFromType } from "../utils/colorTheme";
 
 const NameStyle = css`
   font-size: 15px;
@@ -83,7 +83,7 @@ const PokemonCard: FC<ICardProps> = (props) => {
             <TypeChip key={idx} type={type.type.name} />
           ))}
       </div>
-      <PokeImage type={data.pokemon.types[0].type.name} id={id} imgURL={artwork} size={75} />
+      <PokeImage type={data.pokemon.types[0].type.name} id={id} size={75} />
     </div>
   );
 };

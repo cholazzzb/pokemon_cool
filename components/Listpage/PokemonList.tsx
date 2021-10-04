@@ -1,9 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import PokemonCard from "@components/PokemonCard";
-import { DETAILPAGE } from "@constants/route";
 import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction } from "react";
+import PokemonCard from "@components/PokemonCard";
+import { DETAILPAGE } from "@constants/route";
+import useQueryPokemons from "hooks/API/useQueryPokemons";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
@@ -58,14 +59,18 @@ const Row: FC<IRowProps> = (props) => {
 };
 
 interface IPokemonList {
-  pokemons: any;
   setCurrentPage: Dispatch<SetStateAction<string>>;
   setCurrentId: Dispatch<SetStateAction<number>>;
   setCurrentName: Dispatch<SetStateAction<string>>;
 }
 
 const PokemonList: FC<IPokemonList> = (props) => {
-  const { pokemons, setCurrentPage, setCurrentId, setCurrentName } = props;
+  const { setCurrentPage, setCurrentId, setCurrentName } = props;
+
+  const { loading, error, data } = useQueryPokemons();
+
+  if (loading) return <div>Loading</div>;
+  if (error) return <div>Error</div>;
 
   return (
       <AutoSizer>
@@ -74,10 +79,10 @@ const PokemonList: FC<IPokemonList> = (props) => {
             css={ListStyle}
             height={height}
             width={width}
-            itemCount={pokemons.count}
+            itemCount={data.pokemons.count}
             itemSize={200}
             itemData={{
-              pokemons: pokemons,
+              pokemons: data.pokemons,
               setCurrentPage: setCurrentPage,
               setCurrentId: setCurrentId,
               setCurrentName: setCurrentName,

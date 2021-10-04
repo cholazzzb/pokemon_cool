@@ -7,9 +7,6 @@ const GET_POKEMONS = gql`
       results {
         id
         name
-        image
-        artwork
-        dreamworld
       }
     }
   }

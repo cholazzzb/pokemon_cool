@@ -29,13 +29,12 @@ const InputStyle = css`
 interface ISuccessAlertProps {
   id: number;
   pokemonName: string;
-  imgURL: string;
   color: string;
   setCatchStatus: Dispatch<SetStateAction<null | string>>;
 }
 
 const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
-  const { id, pokemonName, imgURL, color, setCatchStatus } = props;
+  const { id, pokemonName, color, setCatchStatus } = props;
 
   const onClose = () => {
     setCatchStatus(null);
@@ -57,7 +56,7 @@ const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
   ) as OwnedPokemonContextType;
 
   const submitForm = () => {
-    savePokemon(id, pokemonName, name, imgURL)
+    savePokemon(id, pokemonName, name)
     onClose();
   };
 

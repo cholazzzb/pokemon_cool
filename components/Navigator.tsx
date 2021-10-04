@@ -65,6 +65,9 @@ const Navigator: FC<INavigatorProps> = (props) => {
       margin-bottom: 10px;
       color: ${color};
       font-size: 15px;
+      &:hover {
+        background-color: #d9dadc;
+      }
     `;
 
     return style;

@@ -4,16 +4,16 @@ import { css, jsx } from "@emotion/react";
 
 import { Dispatch, FC, SetStateAction, useState } from "react";
 
-import {
-  getPrimaryColorFromType,
-  getSecondaryColorFromType,
-} from "@components/util";
 import Header from "@components/Header";
-
 import Tab from "./Tab";
 import TabContainer from "./TabContainer";
 import Overview from "./Overview";
 import CatchPokemon from "./CatchPokemon";
+
+import {
+  getPrimaryColorFromType,
+  getSecondaryColorFromType,
+} from "@utils/colorTheme";
 
 import useQueryPokeDetail from "hooks/API/useQueryPokeDetail";
 
@@ -22,12 +22,11 @@ interface DetailPageProps {
   setCurrentId: Dispatch<SetStateAction<number>>;
   name: string;
   setCurrentName: Dispatch<SetStateAction<string>>;
-  imgURL: string;
   setCurrentPage: Dispatch<SetStateAction<string>>;
 }
 
 const Detailpage: FC<DetailPageProps> = (props) => {
-  const { id,setCurrentId, name, setCurrentName, imgURL, setCurrentPage } = props;
+  const { id, setCurrentId, name, setCurrentName, setCurrentPage } = props;
   const onBack = () => {
     setCurrentPage("LISTPAGE");
   };
@@ -52,8 +51,14 @@ const Detailpage: FC<DetailPageProps> = (props) => {
 
   return (
     <div css={DetailpageStyle}>
-      <Header caption="" onBack={onBack} />
-      <Overview id={id} setCurrentId={setCurrentId} name={name} setCurrentName={setCurrentName} imgURL={imgURL} types={types} />
+      <Header onBack={onBack} />
+      <Overview
+        id={id}
+        setCurrentId={setCurrentId}
+        name={name}
+        setCurrentName={setCurrentName}
+        types={types}
+      />
       <TabContainer
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
@@ -61,12 +66,7 @@ const Detailpage: FC<DetailPageProps> = (props) => {
       >
         <Tab currentTab={currentTab} id={id} name={name} {...others} />
       </TabContainer>
-      <CatchPokemon
-        id={id}
-        iconColor={seconColor}
-        pokemonName={name}
-        imgURL={imgURL}
-      />
+      <CatchPokemon id={id} iconColor={seconColor} pokemonName={name} />
     </div>
   );
 };

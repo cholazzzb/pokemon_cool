@@ -20,10 +20,9 @@ const useLoadOwnedPoke = () => {
     id: number,
     pokemonName: string,
     name: string,
-    imgURL: string
   ) => {
     let ownedPokemonMem = new OwnedPokemon(ownedPokemon);
-    ownedPokemonMem.addPokemon(id, pokemonName, name, imgURL);
+    ownedPokemonMem.addPokemon(id, pokemonName, name);
     saveNewPokemon(window, ownedPokemonMem.data);
     loadOwnedPokemon();
   };

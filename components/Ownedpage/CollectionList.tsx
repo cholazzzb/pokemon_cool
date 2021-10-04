@@ -1,13 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 
+import { css, jsx } from "@emotion/react";
+import { FC, useContext, useEffect, useState } from "react";
 import Card from "@components/Card";
 import PokeImage from "@components/PokeImage";
-import { css, jsx } from "@emotion/react";
 import { faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { OwnedPokemonContext, OwnedPokemonContextType } from "context/OwnedPokemonContext";
-import { FC, useContext, useEffect, useState } from "react";
+import {
+  OwnedPokemonContext,
+  OwnedPokemonContextType,
+} from "context/OwnedPokemonContext";
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
@@ -29,14 +32,7 @@ interface IRowProps {
 
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-  const {
-    imgURL,
-    id,
-    attributes,
-    loadOwnedPokemon,
-    setSelectedPokeName,
-    triggerRelease,
-  } = data;
+  const { id, attributes, setSelectedPokeName, triggerRelease } = data;
 
   const execute = (pokeName: string) => {
     setSelectedPokeName(pokeName);
@@ -70,7 +66,7 @@ const Row: FC<IRowProps> = (props) => {
   return (
     <div css={ListItemStyle} style={style}>
       <div css={PokeImageStyle}>
-        <PokeImage type={"grass"} id={id} imgURL={imgURL} size={0} />
+        <PokeImage type={"grass"} id={id} size={0} />
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>
@@ -89,24 +85,11 @@ const Row: FC<IRowProps> = (props) => {
 };
 
 interface ICollectionListStyle {
-  id: string;
-  pokemonName: string;
-  imgURL: string;
-  attributes: string[];
+  activePokeIdx: number;
 }
 
 const CollectionList: FC<ICollectionListStyle> = (props) => {
-  const { id, pokemonName, imgURL, attributes } = props;
-  const [windowDimension, setWindowDimension] = useState({
-    width: 1000,
-    height: 666,
-  });
-
-  useEffect(() => {
-    const { innerWidth: width, innerHeight: height } = window;
-    console.log(width, height);
-    setWindowDimension({ width, height });
-  }, []);
+  const {activePokeIdx } = props;
 
   const [selectedPokeName, setSelectedPokeName] = useState<string | null>(null);
   const [releasing, setReleasing] = useState<boolean>(false);
@@ -119,8 +102,11 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
     OwnedPokemonContext
   ) as OwnedPokemonContextType;
 
+  const pokemonId = ownedPokemon[activePokeIdx].id
+  const pokemonName = ownedPokemon[activePokeIdx].name
+  const pokemonAttributes = ownedPokemon[activePokeIdx].attributes
+
   useEffect(() => {
-    console.log("releasing... Pokemon Name:", selectedPokeName);
     if (selectedPokeName) {
       releasePokemon(selectedPokeName);
     }
@@ -132,8 +118,7 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
         height: 100%;
       `}
     >
-      {" "}
-      <Card headText={pokemonName} bodyText={attributes.length + " pokemons"} />
+      <Card headText={pokemonName} bodyText={pokemonAttributes.length + " pokemons"} />
       <div
         css={css`
           height: 100%;
@@ -144,12 +129,11 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
             <List
               height={height}
               width={width}
-              itemCount={attributes.length}
+              itemCount={pokemonAttributes.length}
               itemSize={60}
               itemData={{
-                imgURL: imgURL,
-                id: id,
-                attributes: attributes,
+                id: pokemonId,
+                attributes: pokemonAttributes,
                 setSelectedPokeName: setSelectedPokeName,
                 triggerRelease: triggerRelease,
               }}

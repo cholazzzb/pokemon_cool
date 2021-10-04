@@ -3,17 +3,16 @@
 import { css, jsx } from "@emotion/react";
 import Image from "next/image";
 import { FC } from "react";
-import { getSecondaryColorFromType } from "./util";
+import { getSecondaryColorFromType } from "../utils/colorTheme";
 
 interface ImageProps {
   type: string;
   id: string;
-  imgURL: string;
   size: number;
 }
 
 const PokeImage: FC<ImageProps> = (props) => {
-  const { type, id, imgURL, size } = props;
+  const { type, id, size } = props;
   const bgColor = getSecondaryColorFromType(type);
 
   const ImageBackgroundStyle = css`

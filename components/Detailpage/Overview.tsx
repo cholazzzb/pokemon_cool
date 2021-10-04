@@ -12,7 +12,6 @@ interface OverviewProps {
   setCurrentId: Dispatch<SetStateAction<number>>
   name: string;
   setCurrentName: Dispatch<SetStateAction<string>>
-  imgURL: string;
   types: any;
 }
 
@@ -44,7 +43,7 @@ const OverviewStyle = css`
 `;
 
 const Overview: FC<OverviewProps> = (props) => {
-  const { id, setCurrentId, name, setCurrentName, imgURL, types } = props;
+  const { id, setCurrentId, name, setCurrentName, types } = props;
 
   return (
     <div css={OverviewStyle}>
@@ -68,7 +67,6 @@ const Overview: FC<OverviewProps> = (props) => {
           <PokeImage
             type={types[0].type.name}
             id={id.toString()}
-            imgURL={imgURL}
             size={200}
           />
         </div>

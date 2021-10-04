@@ -2,15 +2,15 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { FC, Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import OwnedPokemonList from "./OwnedPokemonList";
 import CollectionList from "./CollectionList";
 
-import { getTotalPokemon } from "@utils/session";
-
 import PieChart from "./PieChart";
-import useLoadOwnedPoke from "hooks/useLoadOwnedPoke";
-import { OwnedPokemonContext, OwnedPokemonContextType } from "context/OwnedPokemonContext";
+import {
+  OwnedPokemonContext,
+  OwnedPokemonContextType,
+} from "context/OwnedPokemonContext";
 
 const PieChartDataDummy = [
   {
@@ -42,49 +42,33 @@ const BodyStyle = css`
   width: 100%;
   height: 100%;
   flex-direction: column;
+  margin: 0 0 65px 0;
+  overflow: auto;
 `;
 
-interface IOwnedpage {
-  name: string;
-  imgURL: string;
-}
-
-const Ownedpage: FC<IOwnedpage> = (props) => {
+const Ownedpage = () => {
   const { ownedPokemon, savePokemon, releasePokemon } = useContext(
     OwnedPokemonContext
   ) as OwnedPokemonContextType;
-  const [activePokeIdx, setActivePokeIdx] = useState<number|null>(null)
+  const [activePokeIdx, setActivePokeIdx] = useState<number | null>(null);
 
   return (
-    <div
-      css={css`
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-      `}
-    >
-      <div css={BodyStyle}>
-        {ownedPokemon?.length > 0 ? (
-          <Fragment>
-            <PieChart data={PieChartDataDummy} />
-            <OwnedPokemonList
-              ownedPokemon={ownedPokemon}
-              totalOwnedPokemon={getTotalPokemon(ownedPokemon)}
-              setActivePokeIdx={setActivePokeIdx}
-            />
-          </Fragment>
-        ) : (
-          <div css={EmptyStyle}>You don't have any pokemon yet</div>
-        )}
-        {ownedPokemon?.length > 0 && typeof activePokeIdx === "number" && (
-          <CollectionList
-            id={ownedPokemon[activePokeIdx].id}
-            pokemonName={ownedPokemon[activePokeIdx].name}
-            imgURL={ownedPokemon[activePokeIdx].imgURL}
-            attributes={ownedPokemon[activePokeIdx].attributes}
+    <div css={BodyStyle}>
+      {ownedPokemon?.length > 0 ? (
+        <Fragment>
+          <PieChart data={PieChartDataDummy} />
+          <OwnedPokemonList
+            setActivePokeIdx={setActivePokeIdx}
           />
-        )}
-      </div>
+        </Fragment>
+      ) : (
+        <div css={EmptyStyle}>You don't have any pokemon yet</div>
+      )}
+      {ownedPokemon?.length > 0 && typeof activePokeIdx === "number" && (
+        <CollectionList
+          activePokeIdx={activePokeIdx}
+        />
+      )}
     </div>
   );
 };
