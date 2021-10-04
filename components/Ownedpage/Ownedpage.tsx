@@ -56,7 +56,7 @@ const Ownedpage = () => {
     <div css={BodyStyle}>
       {ownedPokemon?.length > 0 ? (
         <Fragment>
-          <PieChart data={PieChartDataDummy} />
+          {/* <PieChart data={PieChartDataDummy} /> */}
           <OwnedPokemonList
             setActivePokeIdx={setActivePokeIdx}
           />

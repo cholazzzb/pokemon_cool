@@ -9,11 +9,12 @@ const CardStyle = css`
 `;
 
 const CardHeaderStyle = css`
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: 900;
 `;
 
 const CardBodyStyle = css`
-  font-size: 25px;
+  font-size: 20px;
 `;
 
 interface ICard {

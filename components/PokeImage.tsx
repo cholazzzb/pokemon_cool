@@ -7,7 +7,7 @@ import { getSecondaryColorFromType } from "../utils/colorTheme";
 
 interface ImageProps {
   type: string;
-  id: string;
+  id: number;
   size: number;
 }
 

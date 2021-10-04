@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 import { FC, useContext, useEffect, useState } from "react";
 import Card from "@components/Card";
 import PokeImage from "@components/PokeImage";
-import { faBan } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   OwnedPokemonContext,
@@ -17,11 +17,10 @@ import { FixedSizeList as List } from "react-window";
 
 const ListItemStyle = css`
   display: flex;
-  width: 100%;
   margin: 20px 0px;
   height: 30px;
   align-items: center;
-  background-color: yellow;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 `;
 
 interface IRowProps {
@@ -57,10 +56,8 @@ const Row: FC<IRowProps> = (props) => {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    width: 40px;
-    height: 40px;
-    background-color: gray;
-    color: white;
+    width: 20px;
+    height: 20px;
   `;
 
   return (
@@ -70,14 +67,13 @@ const Row: FC<IRowProps> = (props) => {
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>
-        <div>Something later</div>
       </div>
       <div css={ReleaseStyle}>
         <span
           css={ReleaseIconStyle}
           onClick={() => execute(attributes[index].name)}
         >
-          <FontAwesomeIcon icon={faBan} />
+          <FontAwesomeIcon icon={faTrash} />
         </span>
       </div>
     </div>
@@ -89,7 +85,7 @@ interface ICollectionListStyle {
 }
 
 const CollectionList: FC<ICollectionListStyle> = (props) => {
-  const {activePokeIdx } = props;
+  const { activePokeIdx } = props;
 
   const [selectedPokeName, setSelectedPokeName] = useState<string | null>(null);
   const [releasing, setReleasing] = useState<boolean>(false);
@@ -102,9 +98,9 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
     OwnedPokemonContext
   ) as OwnedPokemonContextType;
 
-  const pokemonId = ownedPokemon[activePokeIdx].id
-  const pokemonName = ownedPokemon[activePokeIdx].name
-  const pokemonAttributes = ownedPokemon[activePokeIdx].attributes
+  const pokemonId = ownedPokemon[activePokeIdx].id;
+  const pokemonName = ownedPokemon[activePokeIdx].name;
+  const pokemonAttributes = ownedPokemon[activePokeIdx].attributes;
 
   useEffect(() => {
     if (selectedPokeName) {
@@ -118,10 +114,14 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
         height: 100%;
       `}
     >
-      <Card headText={pokemonName} bodyText={pokemonAttributes.length + " pokemons"} />
+      <Card
+        headText={pokemonName}
+        bodyText={pokemonAttributes.length + " pokemons"}
+      />
       <div
         css={css`
           height: 100%;
+          padding: 30px;
         `}
       >
         <AutoSizer>
@@ -130,7 +130,7 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
               height={height}
               width={width}
               itemCount={pokemonAttributes.length}
-              itemSize={60}
+              itemSize={100}
               itemData={{
                 id: pokemonId,
                 attributes: pokemonAttributes,

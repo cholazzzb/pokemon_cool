@@ -3,11 +3,10 @@
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 
-import { useQuery, gql } from "@apollo/client";
-
 import PokeImage from "./PokeImage";
 import TypeChip from "./TypeChip";
 import { getPrimaryColorFromType } from "../utils/colorTheme";
+import useQueryPokeType from "hooks/API/useQueryPokeType";
 
 const NameStyle = css`
   font-size: 15px;
@@ -21,39 +20,15 @@ const AttributeStyle = css`
   flex-direction: column;
 `;
 
-interface ICard {
+interface IPokemonCardHorProps {
   id: string;
   name: string;
-  image?: string;
-  artwork: string;
-  dreamworld?: string;
 }
 
-interface ICardProps {
-  data: ICard;
-}
+const PokemonCardHor: FC<IPokemonCardHorProps> = (props) => {
+  const { id, name } = props;
 
-const PokemonCard: FC<ICardProps> = (props) => {
-  const { id, name, image, artwork, dreamworld } = props.data;
-
-  const GET_POKEMON_TYPE = gql`
-    query Pokemon($name: String!) {
-      pokemon(name: $name) {
-        types {
-          slot
-          type {
-            id
-            url
-            name
-          }
-        }
-      }
-    }
-  `;
-
-  const { loading, error, data } = useQuery(GET_POKEMON_TYPE, {
-    variables: { name },
-  });
+  const { loading, error, data } = useQueryPokeType(name);
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
@@ -61,7 +36,7 @@ const PokemonCard: FC<ICardProps> = (props) => {
   const type = data.pokemon.types[0].type.name;
   const bgColor = getPrimaryColorFromType(type);
   const CardStyle = css`
-    min-width: 250px;
+    min-width: 200px;
     max-width: 300px;
     height: 150px;
     background-color: ${bgColor};
@@ -72,6 +47,8 @@ const PokemonCard: FC<ICardProps> = (props) => {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+      rgba(0, 0, 0, 0.23) 0px 6px 6px;
   `;
 
   return (
@@ -83,9 +60,13 @@ const PokemonCard: FC<ICardProps> = (props) => {
             <TypeChip key={idx} type={type.type.name} />
           ))}
       </div>
-      <PokeImage type={data.pokemon.types[0].type.name} id={id} size={75} />
+      <PokeImage
+        type={data.pokemon.types[0].type.name}
+        id={parseInt(id)}
+        size={75}
+      />
     </div>
   );
 };
 
-export default PokemonCard;
+export default PokemonCardHor;

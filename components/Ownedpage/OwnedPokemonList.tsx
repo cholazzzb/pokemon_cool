@@ -3,8 +3,12 @@
 
 import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction, useContext } from "react";
-import PokemonInfo from "./PokemonInfo";
-import { OwnedPokemonContext, OwnedPokemonContextType } from "context/OwnedPokemonContext";
+import PokemonCardVer from "../PokemonCardVer";
+import Card from "@components/Card";
+import {
+  OwnedPokemonContext,
+  OwnedPokemonContextType,
+} from "context/OwnedPokemonContext";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 
@@ -18,12 +22,9 @@ const Row: FC<IRowProps> = (props) => {
   const { ownedPokemon, setActivePokeIdx } = data;
   return (
     <div onClick={() => setActivePokeIdx(index)} style={style}>
-      <PokemonInfo
-        data={{
-          id: ownedPokemon[index].id,
-          name: ownedPokemon[index].name,
-          artwork: ownedPokemon[index].imgURL,
-        }}
+      <PokemonCardVer
+          id= {ownedPokemon[index].id}
+          name= {ownedPokemon[index].name}
       />
     </div>
   );
@@ -56,7 +57,12 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
   ) as OwnedPokemonContextType;
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%", padding: "10px"}}>
+      <Card
+        headText="Your Owned Pokemon"
+        bodyText="Click to see details"
+      />
+
       <AutoSizer>
         {({ height, width }) => (
           <List
@@ -64,7 +70,7 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
             height={height}
             width={width}
             itemCount={ownedPokemon.length}
-            itemSize={330}
+            itemSize={200}
             layout="horizontal"
             itemData={{
               ownedPokemon: ownedPokemon,

@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { Dispatch, FC, SetStateAction } from "react";
-import PokemonCard from "@components/PokemonCard";
+import PokemonCardHor from "@components/PokemonCardHor";
 import { DETAILPAGE } from "@constants/route";
 import useQueryPokemons from "hooks/API/useQueryPokemons";
 
@@ -52,7 +52,7 @@ const Row: FC<IRowProps> = (props) => {
   return (
     <div onClick={handleClick} css={ListItemStyle} style={style}>
       {pokemons.results[index] && (
-        <PokemonCard data={pokemons.results[index]} />
+        <PokemonCardHor id={pokemons.results[index].id} name={pokemons.results[index].name} />
       )}
     </div>
   );
