@@ -8,8 +8,8 @@ import Alert from "@components/Alert";
 const AlertContainerStyle = css`
   display: flex;
   flex-direction: column;
-  justify-content:center;
-  align-center:center;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface IFailedAlertProps {
@@ -20,15 +20,24 @@ interface IFailedAlertProps {
 const FailedAlert: FC<IFailedAlertProps> = (props) => {
   const { iconColor, catchPokemon } = props;
   const TryAgainStyle = css`
+    display: flex;
+    justify-content: center;
+    width: 100px;
     padding: 10px;
     border-radius: 20px;
     background-color: ${iconColor};
   `;
 
   return (
-    <Alert level="danger" headText="Catching Pokemon">
+    <Alert headText="FAILED">
       <div css={AlertContainerStyle}>
-        <div>FAILED!</div>
+        <div
+          css={css`
+            height: 100px;
+          `}
+        >
+          Pokemon not catched
+        </div>
         <div onClick={catchPokemon} css={TryAgainStyle}>
           Try Again
         </div>

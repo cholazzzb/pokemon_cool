@@ -29,8 +29,8 @@ const NavigatorContainerStyle = css`
 
 const IconStyle = css`
   display: flex;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   justify-content: center;
   align-items: center;
 `;
@@ -80,7 +80,7 @@ const Navigator: FC<INavigatorProps> = (props) => {
         onClick={() => setCurrentPage(LISTPAGE)}
       >
         <span css={IconStyle}>
-          <FontAwesomeIcon icon={faBook} size="1x" />
+          <FontAwesomeIcon icon={faBook} />
         </span>
         Pokemon List
       </div>

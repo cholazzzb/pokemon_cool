@@ -21,8 +21,8 @@ const SearchContainerStyle = css`
 
 const IconStyle = css`
   display: flex;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   justify-content: center;
   align-items: center;
 `;
@@ -32,7 +32,7 @@ const Search = () => {
   return (
     <div css={SearchContainerStyle}>
       <span css={IconStyle}>
-        <FontAwesomeIcon icon={faSearch} size="1x" />
+        <FontAwesomeIcon icon={faSearch} />
       </span>
       Search
     </div>

@@ -6,6 +6,8 @@ import { Dispatch, FC, SetStateAction } from "react";
 import PokeImage from "@components/PokeImage";
 import TypeChip from "@components/TypeChip";
 import NavigateOverview from "./NavigateOverview";
+import CatchPokemon from "./CatchPokemon";
+import { getSecondaryColorFromType } from "@utils/colorTheme";
 
 interface OverviewProps {
   id: number;
@@ -44,6 +46,7 @@ const OverviewStyle = css`
 
 const Overview: FC<OverviewProps> = (props) => {
   const { id, setCurrentId, name, setCurrentName, types } = props;
+  const seconColor = getSecondaryColorFromType(types[0].type.name);
 
   return (
     <div css={OverviewStyle}>
@@ -72,6 +75,8 @@ const Overview: FC<OverviewProps> = (props) => {
         </div>
       </div>
       <NavigateOverview currentId={id} setCurrentId={setCurrentId} setCurrentName={setCurrentName}/>
+      <CatchPokemon id={id} iconColor={seconColor} pokemonName={name} />
+
     </div>
   );
 };

@@ -40,6 +40,8 @@ const ChildrenStyle = css`
   display: flex;
   justify-content: center;
   width: 15%;
+  height:100%
+  align-items:center;
 `;
 
 interface IHeaderProps {

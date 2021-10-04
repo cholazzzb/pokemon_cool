@@ -1,23 +1,42 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css, jsx, keyframes } from "@emotion/react";
 
 import { FC, useState } from "react";
 
 import SuccessAlert from "./SuccessAlert";
 import FailedAlert from "./FailedAlert";
 import Image from "next/image";
+import CatchingAlert from "./CatchingAlert";
 
 const CatchPokemonStyle = css`
-  position:fixed;
+  position:absolute;
   right: 20px;
-  bottom: 20px;
+  top: 100px;
   width: 70px;
   height: 70px;
   border-radius: 9999px
   display:flex;
   justify-content:center
   align-items:center;
+  color: black;
+`;
+
+const CatchAnimation = keyframes`
+  from, 20%, 53%, 80%, to {
+    transform: translate3d(0,0,0);
+    transform: rotate(30deg);
+  };
+  40%, 43% {
+    transform: translate3d(0, -20px, 0);
+    transform: rotate(-30deg);
+  };
+  70% {
+    transform: translate3d(0, -5px, 0);
+  };
+  90% {
+    transform: translate3d(0,-4px,0);
+  }
 `;
 
 interface ICatchPokemonProps {
@@ -27,15 +46,14 @@ interface ICatchPokemonProps {
 }
 
 const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
-  const {id, iconColor, pokemonName } = props;
+  const { id, iconColor, pokemonName } = props;
   const [catchStatus, setCatchStatus] = useState<null | string>(null);
-  const catchPokemon = async () => {
-    const reset = async () => {
-      setCatchStatus(null);
-    };
-    await reset();
-    const successRate = Math.random();
-    successRate > 0.5 ? setCatchStatus("SUCCESS") : setCatchStatus("FAILED");
+
+  const onClose = () => {
+    setCatchStatus(null);
+  };
+  const catchPokemon = () => {
+    setCatchStatus("CATCHING");
   };
 
   let Alert;
@@ -43,7 +61,7 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
     case "SUCCESS":
       Alert = (
         <SuccessAlert
-        id={id}
+          id={id}
           pokemonName={pokemonName}
           color={iconColor}
           setCatchStatus={setCatchStatus}
@@ -53,6 +71,10 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
 
     case "FAILED":
       Alert = <FailedAlert iconColor={iconColor} catchPokemon={catchPokemon} />;
+      break;
+
+    case "CATCHING":
+      Alert = <CatchingAlert setCatchStatus={setCatchStatus} />;
       break;
 
     default:
@@ -74,8 +96,14 @@ const CatchPokemon: FC<ICatchPokemonProps> = (props) => {
   return (
     <div css={CatchPokemonStyle}>
       <span css={CatchIconStyle} onClick={catchPokemon}>
-        <Image src="/pokeball.svg" width={30} height={30} />
-        Catch!
+        <span
+          css={css`
+            animation: ${CatchAnimation} 1s ease infinite;
+          `}
+        >
+          <Image src="/pokeballSelected.svg" width={30} height={30} />
+        </span>
+        Catch
       </span>
       {catchStatus && Alert}
     </div>

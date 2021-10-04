@@ -8,7 +8,6 @@ import Header from "@components/Header";
 import Tab from "./Tab";
 import TabContainer from "./TabContainer";
 import Overview from "./Overview";
-import CatchPokemon from "./CatchPokemon";
 
 import {
   getPrimaryColorFromType,
@@ -40,7 +39,6 @@ const Detailpage: FC<DetailPageProps> = (props) => {
   const { types, ...others } = data.pokemon;
 
   const primColor = getPrimaryColorFromType(types[0].type.name);
-  const seconColor = getSecondaryColorFromType(types[0].type.name);
   const DetailpageStyle = css`
     background-color: ${primColor};
     display: flex;
@@ -66,7 +64,6 @@ const Detailpage: FC<DetailPageProps> = (props) => {
       >
         <Tab currentTab={currentTab} id={id} name={name} {...others} />
       </TabContainer>
-      <CatchPokemon id={id} iconColor={seconColor} pokemonName={name} />
     </div>
   );
 };

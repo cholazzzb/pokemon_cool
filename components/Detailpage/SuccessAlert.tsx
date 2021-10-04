@@ -74,7 +74,7 @@ const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
   `;
 
   return (
-    <Alert level="success" headText="Catching Pokemon">
+    <Alert headText="SUCCESS">
       <div css={FormStyle}>
         Gotcha! Pokemon catched!!!
         <label>Give your pokemon name!</label>
@@ -83,6 +83,7 @@ const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
           type="text"
           value={name}
           onChange={handleChangeName}
+          placeholder="Insert Pokemon Name"
         />
         <button css={ButtonStyle} onClick={handleSubmit}>
           OK
