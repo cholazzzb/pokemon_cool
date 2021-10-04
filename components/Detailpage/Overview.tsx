@@ -60,6 +60,7 @@ const Overview: FC<OverviewProps> = (props) => {
       <div css={ImageStyle}>
         <PokeImage
           type={types[0].type.name}
+          id={id.toString()}
           imgURL={imgURL}
           size={200}
         />

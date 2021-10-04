@@ -8,12 +8,13 @@ import { getSecondaryColorFromType } from "./util";
 
 interface ImageProps {
   type: string;
+  id: string;
   imgURL: string;
   size: number;
 }
 
 const PokeImage: FC<ImageProps> = (props) => {
-  const { type, imgURL, size } = props;
+  const { type, id, imgURL, size } = props;
   const bgColor = getSecondaryColorFromType(type);
 
   const ImageBackgroundStyle = css`
@@ -32,16 +33,12 @@ const PokeImage: FC<ImageProps> = (props) => {
     transform-origin: bottom;
   `;
 
-  const image = useFetchPokeImage(imgURL);
-
-  if (image === null) return <div>Failed Fetch Image</div>;
-
   return (
     <div css={ImageBackgroundStyle}>
       <div css={ImageStyle}>
         <Image
           data-testid="pokemon-image"
-          src={image}
+          src={`/sprites/${id}.png`}
           alt="pokemon"
           layout="fill"
         />
