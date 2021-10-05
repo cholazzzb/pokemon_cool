@@ -10,8 +10,8 @@ const TabContainerStyle = css`
   border-top-right-radius: 20px;
   background-color: #f7f7f7;
   color: black;
-  overflow: auto;
   padding-top: 20px;
+  padding-bottom: 300px;
 `;
 
 const TabHeaderStyle = css`
@@ -22,14 +22,18 @@ const TabHeaderStyle = css`
 const TabStyle = css`
   display: flex;
   justify-content: center;
-  width: 25%;
+  width: 33%;
   font-size: 12px;
   padding: 10px;
+  overflow: auto;
 `;
 
-const TabBodyStyle = css``;
+const TabBodyStyle = css`
+  height: 100%;
+  overflow: auto;
+`;
 
-const tabs: string[] = ["About", "Base Stats", "Evolution", "Moves"];
+const tabs: string[] = ["About", "Base Stats", "Moves"];
 
 interface TabContainerProps {
   children: any;

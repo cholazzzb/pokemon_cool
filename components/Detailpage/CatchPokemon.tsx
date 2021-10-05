@@ -12,7 +12,7 @@ import CatchingAlert from "./CatchingAlert";
 const CatchPokemonStyle = css`
   position:absolute;
   right: 20px;
-  top: 100px;
+  top: 120px;
   width: 70px;
   height: 70px;
   border-radius: 9999px

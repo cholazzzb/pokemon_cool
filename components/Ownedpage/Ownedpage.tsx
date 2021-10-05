@@ -6,7 +6,6 @@ import { Fragment, useContext, useState } from "react";
 import OwnedPokemonList from "./OwnedPokemonList";
 import CollectionList from "./CollectionList";
 
-import PieChart from "./PieChart";
 import {
   OwnedPokemonContext,
   OwnedPokemonContextType,
@@ -42,6 +41,8 @@ const BodyStyle = css`
   width: 100%;
   height: 100%;
   flex-direction: column;
+  padding-bottom: 200px
+  overflow: auto;
   margin: 0 0 65px 0;
 
   scrollbar-width: thin;
@@ -71,9 +72,7 @@ const Ownedpage = () => {
       {ownedPokemon?.length > 0 ? (
         <Fragment>
           {/* <PieChart data={PieChartDataDummy} /> */}
-          <OwnedPokemonList
-            setActivePokeIdx={setActivePokeIdx}
-          />
+          <OwnedPokemonList setActivePokeIdx={setActivePokeIdx} />
         </Fragment>
       ) : (
         <div css={EmptyStyle}>You don't have any pokemon yet</div>
@@ -81,6 +80,7 @@ const Ownedpage = () => {
       {ownedPokemon?.length > 0 && typeof activePokeIdx === "number" && (
         <CollectionList
           activePokeIdx={activePokeIdx}
+          setActivePokeIdx={setActivePokeIdx}
         />
       )}
     </div>

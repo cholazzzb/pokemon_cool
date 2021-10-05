@@ -50,16 +50,6 @@ const TabAbout: FC<TabAboutProps> = (props) => {
           )
         )}
       </div>
-      <div style={{ fontWeight: 900, padding: "20px 0px" }}>Breeding</div>
-      <div css={TextContainerStyle}>
-        <p css={LabelStyle}>Gender</p>
-      </div>
-      <div css={TextContainerStyle}>
-        <p css={LabelStyle}>Egg Groups</p>
-      </div>
-      <div css={TextContainerStyle}>
-        <p css={LabelStyle}>Egg Cycle</p>
-      </div>
     </div>
   );
 };

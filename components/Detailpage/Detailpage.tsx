@@ -36,11 +36,13 @@ const Detailpage: FC<DetailPageProps> = (props) => {
 
   const primColor = getPrimaryColorFromType(types[0].type.name);
   const DetailpageStyle = css`
+    position: relative;
     background-color: ${primColor};
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
+    overflow: auto;
   `;
 
   return (
@@ -57,7 +59,7 @@ const Detailpage: FC<DetailPageProps> = (props) => {
         setCurrentTab={setCurrentTab}
         primColor={primColor}
       >
-        <Tab currentTab={currentTab} id={id} name={name} {...others} />
+        <Tab currentTab={currentTab} {...others} />
       </TabContainer>
     </div>
   );

@@ -8,7 +8,7 @@ import Header from "@components/Header";
 import PokemonList from "./PokemonList";
 
 const ListPageStyle = css`
-  padding: 10px;
+  padding: 0px 10px 65px 10px;
   height: 100%;
 `;
 

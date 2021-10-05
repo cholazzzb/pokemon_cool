@@ -57,7 +57,7 @@ const OwnedPokemonList: FC<IOwnedPokemonListProps> = (props) => {
   ) as OwnedPokemonContextType;
 
   return (
-    <div style={{ height: "100%", padding:"10px"}}>
+    <div style={{ height: "50%", padding:"10px"}}>
       <Card
         headText="Your Owned Pokemon"
         bodyText="Click to see details"

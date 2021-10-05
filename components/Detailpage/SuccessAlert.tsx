@@ -38,7 +38,6 @@ interface ISuccessAlertProps {
 const SuccessAlert: FC<ISuccessAlertProps> = (props) => {
 
 useEffect(() => {
-  console.log("AUDIO PLAY")
   const audio = new Audio(pokemonCaughtSound)
   audio.play()
 }, [])

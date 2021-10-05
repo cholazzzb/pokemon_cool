@@ -1,8 +1,15 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+
 import { FixedSizeList as List } from "react-window";
+
+const RowStyle = css`
+  padding: 10px;
+  height: 60px;
+`;
 
 interface IRowProps {
   data: any;
@@ -11,60 +18,51 @@ interface IRowProps {
 }
 const Row: FC<IRowProps> = (props) => {
   const { data, index, style } = props;
-  const { moves } =
-    data;
+  const { moves } = data;
 
   return (
-    <div style={style}>
+    <div css={RowStyle} style={style}>
       {moves[index].move.name}
     </div>
   );
 };
-
 
 interface TabMoveProps {
   moves: any;
 }
 
 const MoveContainerStyle = css`
-  padding: 10px;
+  overflow: auto;
+  padding: 0px 10px;
+  height: 100%;
 `;
 
 const MoveStyle = css`
-  padding: 5px;
+  padding: 10px;
   overflow: auto;
 `;
 
 const TabMoves: FC<TabMoveProps> = (props) => {
   const { moves } = props;
-  const [windowDimension, setWindowDimension] = useState({
-    width: 1000,
-    height: 666,
-  });
-  
-
-  useEffect(() => {
-    const { innerWidth: width, innerHeight: height } = window;
-    console.log(width, height);
-    setWindowDimension({ width, height });
-  }, []);
 
   return (
     <div css={MoveContainerStyle}>
-      <List
-        css={MoveStyle}
-        height={150}
-        itemCount={moves.length}
-        itemSize={20}
-        width={
-          windowDimension.width > 420 ? 420 - 28 : windowDimension.width - 28
-        }
-        itemData={{
-          moves:moves
-        }}
-      >
-        {Row}
-      </List>
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            css={MoveStyle}
+            height={height}
+            itemCount={moves.length}
+            itemSize={40}
+            width={width}
+            itemData={{
+              moves: moves,
+            }}
+          >
+            {Row}
+          </List>
+        )}
+      </AutoSizer>
     </div>
   );
 };

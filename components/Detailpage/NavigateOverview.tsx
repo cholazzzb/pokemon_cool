@@ -10,7 +10,7 @@ import { FC, Dispatch, SetStateAction } from "react";
 
 const NavigateOverviewStyle = css`
   position: absolute;
-  top: 25%;
+  top: 60%;
   display: flex;
   width: 100%;
   justify-content: space-between;

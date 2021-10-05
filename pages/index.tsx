@@ -8,6 +8,7 @@ import Head from "next/head";
 import { FC, useState, Dispatch, SetStateAction } from "react";
 
 import Layout from "@components/Layout";
+import Body from "@components/Body";
 import Listpage from "@components/Listpage/Listpage";
 import Detailpage from "@components/Detailpage/Detailpage";
 import Ownedpage from "@components/Ownedpage/Ownedpage";
@@ -77,14 +78,16 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <Content
-          pokemons={data.pokemons.results}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          currentId={currentId}
-          setCurrentId={setCurrentId}
-        />
         <Navigator currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Body>
+          <Content
+            pokemons={data.pokemons.results}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            currentId={currentId}
+            setCurrentId={setCurrentId}
+          />
+        </Body>
       </Layout>
     </OwnedPokemonContext.Provider>
   );

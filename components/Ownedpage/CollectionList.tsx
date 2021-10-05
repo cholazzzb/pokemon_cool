@@ -2,11 +2,17 @@
 /** @jsx jsx */
 
 import { css, jsx } from "@emotion/react";
-import { FC, useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import Card from "@components/Card";
 import Image from "next/image";
 
-import PokeImage from "@components/PokeImage";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,7 +29,7 @@ const ListItemStyle = css`
   height: 30px;
   align-items: center;
   border-style: solid;
-  border-width: 2px 0px 2px 0px;
+  border-width: 2px 0px;
   border-color: #f2f2f5;
 `;
 
@@ -76,7 +82,7 @@ const Row: FC<IRowProps> = (props) => {
           src={`/sprites/${id}.png`}
           alt="pokemon"
           layout="fill"
-        />{" "}
+        />
       </div>
       <div css={MainStyle}>
         <div>{attributes[index].name}</div>
@@ -96,10 +102,11 @@ const Row: FC<IRowProps> = (props) => {
 
 interface ICollectionListStyle {
   activePokeIdx: number;
+  setActivePokeIdx: Dispatch<SetStateAction<number | null>>;
 }
 
 const CollectionList: FC<ICollectionListStyle> = (props) => {
-  const { activePokeIdx } = props;
+  const { activePokeIdx, setActivePokeIdx } = props;
 
   const [selectedPokeName, setSelectedPokeName] = useState<string | null>(null);
   const [releasing, setReleasing] = useState<boolean>(false);
@@ -119,13 +126,14 @@ const CollectionList: FC<ICollectionListStyle> = (props) => {
   useEffect(() => {
     if (selectedPokeName) {
       releasePokemon(selectedPokeName);
+      setActivePokeIdx(null);
     }
   }, [releasing]);
 
   return (
     <div
       css={css`
-        height: 100%;
+        height: 15%;
         padding: 10px;
       `}
     >
